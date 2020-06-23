@@ -1,0 +1,17 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/frag1"
+        android:enabled="true"
+        android:icon="@drawable/pay_press"
+        android:title="earn"/>
+    <item
+        android:id="@+id/frag2"
+        android:enabled="true"
+        android:icon="@drawable/have"
+        android:title="have"/>
+    <item
+        android:id="@+id/frag3"
+        android:enabled="true"
+        android:icon="@drawable/pay"
+        android:title="pay"/>
+</menu>
