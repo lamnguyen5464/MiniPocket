@@ -2,6 +2,7 @@ package com.example.myapplication.wolit.viewmodels;
 
 import android.app.DatePickerDialog;
 import android.content.Context;
+import android.content.Intent;
 import android.widget.DatePicker;
 import android.widget.Toast;
 
@@ -9,13 +10,18 @@ import androidx.databinding.BaseObservable;
 import androidx.fragment.app.FragmentManager;
 
 import com.example.myapplication.wolit.R;
-import com.example.myapplication.wolit.framents.FragmentEveryNDay;
+import com.example.myapplication.wolit.activities.MainActivity;
+import com.example.myapplication.wolit.framents.newtransfer.FragmentEveryNDay;
 import com.example.myapplication.wolit.framents.FragmentFunc;
-import com.example.myapplication.wolit.framents.FragmentMonthly;
-import com.example.myapplication.wolit.framents.FragmentWeekly;
+import com.example.myapplication.wolit.framents.newtransfer.FragmentMonthly;
+import com.example.myapplication.wolit.framents.newtransfer.FragmentWeekly;
 import com.example.myapplication.wolit.model.DateType;
+import com.example.myapplication.wolit.model.tranferdetail.FactoryDetail;
 import com.example.myapplication.wolit.model.NewTranferModel;
+import com.example.myapplication.wolit.model.tranferdetail.NonRepeatedDetail;
+import com.example.myapplication.wolit.model.tranferdetail.TransactionDetail;
 
+import java.text.DecimalFormat;
 import java.util.Calendar;
 
 public class NewTransferViewModel extends BaseObservable {
@@ -23,12 +29,17 @@ public class NewTransferViewModel extends BaseObservable {
     private NewTranferModel newTranferModel;
     private FragmentManager fragmentManager;
     private FragmentFunc fragmentFunc;
+    public String tmpValue = "";
 
     public NewTransferViewModel(Context context, FragmentManager fragmentManager){
         newTranferModel = new NewTranferModel();
         fragmentFunc = new FragmentFunc();
         this.context = context;
         this.fragmentManager = fragmentManager;
+        //get end set date
+        Calendar calendar = Calendar.getInstance();
+        NonRepeatedDetail.getRecentDetail().getDate().set(calendar.get(Calendar.DAY_OF_MONTH), calendar.get(Calendar.MONTH)+1, calendar.get(Calendar.YEAR));
+        newTranferModel.nonRepeatedDate = NonRepeatedDetail.getRecentDetail().getDate().getString();
     }
     public NewTranferModel getNewTranferModel(){
         return this.newTranferModel;
@@ -48,6 +59,29 @@ public class NewTransferViewModel extends BaseObservable {
             fragmentFunc.loadFragment(new FragmentWeekly(context, this.newTranferModel.isEarning), fragmentManager, R.id.frameDatePicker);
         }
         notifyChange();
+    }
+    public void afterNoteTextChange(CharSequence text){
+        this.newTranferModel.note = text.toString();
+    }
+    public void afterValueTextChange(CharSequence text){
+        if (!this.tmpValue.equals(text.toString())){
+            //erase comma
+            String tmp = text.toString().replace(",", "");
+            if (tmp.equals(".")) return;
+            this.newTranferModel.value = (!tmp.isEmpty()) ? Double.parseDouble(tmp) : 0;
+            DecimalFormat decimalFormat;
+            if (tmp.indexOf(".") > 0){
+                if (tmp.indexOf(".") == tmp.length()-1){
+                    decimalFormat = new DecimalFormat("###,###,###.");
+                }else{
+                    decimalFormat = new DecimalFormat("###,###,###.0");
+                }
+            }else{
+                decimalFormat = new DecimalFormat("###,###,###");
+            }
+            this.tmpValue  = (!tmp.isEmpty()) ? decimalFormat.format(this.newTranferModel.value) : "";
+            notifyChange();
+        }
     }
     public void switchToggleGroup(boolean isWeekly, boolean isMonthly, boolean isEveryNDays){
         if (isWeekly) this.newTranferModel.isWeekly = true;
@@ -87,12 +121,26 @@ public class NewTransferViewModel extends BaseObservable {
         DatePickerDialog datePickerDialog = new DatePickerDialog(context, R.style.DatePickerDialogTheme, new DatePickerDialog.OnDateSetListener() {
             @Override
             public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
-                DateType.getRecentDate().set(dayOfMonth, month, year);
-                newTranferModel.nonRepeatedDate = DateType.getRecentDate().getString();
+                NonRepeatedDetail.getRecentDetail().getDate().set(dayOfMonth, month+1, year);
+                newTranferModel.nonRepeatedDate = NonRepeatedDetail.getRecentDetail().getDate().getString();
                 notifyChange();
                 Toast.makeText(context, "Hold button to remove this date", Toast.LENGTH_SHORT).show();
             }
         }, calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH));
         datePickerDialog.show();
+    }
+    public void onClickAddingButton(){
+        TransactionDetail finalDetail = FactoryDetail.getRecentInstance(this.newTranferModel);
+        finalDetail.setBasicInfo(((this.newTranferModel.isEarning)?1:-1)*this.newTranferModel.value, this.newTranferModel.note);
+        if (finalDetail.isNotValid()){
+            Toast.makeText(context, "The information is note valid!", Toast.LENGTH_SHORT).show();
+        }else{
+            finalDetail.saveToDatabase();
+            if (this.newTranferModel.isRepeated){
+                DateType fromDate = new DateType(finalDetail.getStartDate());
+                finalDetail.generateTransaction(fromDate, DateType.getToday());
+            }
+            context.startActivity(new Intent(context, MainActivity.class));
+        }
     }
 }

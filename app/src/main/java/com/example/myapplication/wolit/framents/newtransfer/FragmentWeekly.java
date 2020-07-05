@@ -1,30 +1,33 @@
-package com.example.myapplication.wolit.framents;
+package com.example.myapplication.wolit.framents.newtransfer;
 
 import android.content.Context;
 import android.os.Bundle;
 
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 import android.widget.ToggleButton;
 
 import com.example.myapplication.wolit.R;
-import com.example.myapplication.wolit.model.WeeklyDetail;
+import com.example.myapplication.wolit.model.tranferdetail.WeeklyDetail;
 
 
 public class FragmentWeekly extends Fragment implements CompoundButton.OnCheckedChangeListener, CompoundButton.OnClickListener, CompoundButton.OnLongClickListener{
-    RelativeLayout background;
-    boolean isEarningMode;
-    Context context;
+    private RelativeLayout background;
+    private boolean isEarningMode;
+    private Context context;
+    private int colorCode;
     public FragmentWeekly(Context context, boolean isEarningMode){
         this.isEarningMode = isEarningMode;
         this.context = context;
+        this.colorCode = (this.isEarningMode) ? ContextCompat.getColor(context, R.color.GREEN) : ContextCompat.getColor(context, R.color.RED);
     }
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -36,18 +39,16 @@ public class FragmentWeekly extends Fragment implements CompoundButton.OnChecked
 
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_weekly, container, false);
-        background = view.findViewById(R.id.background);
-        if (isEarningMode){
-            background.setBackgroundResource(R.drawable.custom_input_green);
-        }else{
-            background.setBackgroundResource(R.drawable.custom_input_red);
-        }
+        //set UI base on
+        ((TextView)view.findViewById(R.id.labelDaysOfWeek)).setTextColor(colorCode);
+        ((TextView)view.findViewById(R.id.labelFromDate)).setTextColor(colorCode);
+
         //set Event switch toggle button
         ((ToggleButton)view.findViewById(R.id.tgBt1)).setOnCheckedChangeListener(this);
         ((ToggleButton)view.findViewById(R.id.tgBt2)).setOnCheckedChangeListener(this);
         ((ToggleButton)view.findViewById(R.id.tgBt3)).setOnCheckedChangeListener(this);
         ((ToggleButton)view.findViewById(R.id.tgBt4)).setOnCheckedChangeListener(this);
-        ((ToggleButton)view.findViewById(R.id.tgBt4)).setOnCheckedChangeListener(this);
+        ((ToggleButton)view.findViewById(R.id.tgBt5)).setOnCheckedChangeListener(this);
         ((ToggleButton)view.findViewById(R.id.tgBt6)).setOnCheckedChangeListener(this);
         ((ToggleButton)view.findViewById(R.id.tgBt7)).setOnCheckedChangeListener(this);
 

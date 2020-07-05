@@ -2,17 +2,27 @@ package com.example.myapplication.wolit.model;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.renderscript.Element;
+import android.util.Log;
+import android.util.MonthDisplayHelper;
+
+import com.example.myapplication.wolit.model.tranferdetail.EveryNDayDetail;
+import com.example.myapplication.wolit.model.tranferdetail.MonthlyDetail;
+import com.example.myapplication.wolit.model.tranferdetail.WeeklyDetail;
+import com.example.myapplication.wolit.realm.RealmApdapter;
+
+import io.realm.RealmResults;
 
 import static android.content.Context.MODE_PRIVATE;
 
-public class MyMoney {
+public class CurrentStatus {
     public double myMoney;
     public String currencyType = "VND";
-    private static MyMoney sharedValue;
-    private MyMoney(){}
-    public static MyMoney getSharedValue(Context context){
+    private static CurrentStatus sharedValue;
+    private CurrentStatus(){}
+    public static CurrentStatus getSharedValue(Context context){
         if (sharedValue == null){
-            sharedValue = new MyMoney();
+            sharedValue = new CurrentStatus();
             SharedPreferences sharedPreferences = context.getSharedPreferences("STORAGE_TAG",MODE_PRIVATE);
             sharedValue.myMoney = Double.parseDouble(sharedPreferences.getString("MONEY_TAG", "0"));
             sharedValue.currencyType = sharedPreferences.getString("CURRENCY_TAG","VND");
@@ -32,4 +42,10 @@ public class MyMoney {
         editor.commit();
         return true;
     }
+    public static void updateTransaction(DateType fromDate, DateType toDate){
+        WeeklyDetail.updateTransactionFromRealm(fromDate, toDate);
+        MonthlyDetail.updateTransactionFromRealm(fromDate, toDate);
+        EveryNDayDetail.updateTransactionFromRealm(fromDate, toDate);
+    }
+
 }

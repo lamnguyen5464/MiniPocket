@@ -4,23 +4,49 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".framents.FragmentCurrentStatus">
+    tools:context=".framents.FragmentMain">
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@drawable/custom_background_fragment"
+        android:background="@drawable/custom_background_white"
         >
+        <RelativeLayout
+            android:id="@+id/header"
+            android:layout_width="match_parent"
+            android:layout_height="70dp"
+            android:background="@drawable/custom_background_header"
+            android:padding="10dp"
+            >
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="20dp"
+                android:layout_centerVertical="true"
+                android:text="Your status"
+                android:textColor="@color/WHITE"
+                android:fontFamily="@font/math_tapping"
+                android:textSize="25sp"
+                />
+        </RelativeLayout>
         <TextView
             android:id="@+id/textView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textColor="@color/GRAY"
+            android:textColor="@color/YELLOW"
             android:textSize="30dp"
             android:fontFamily="@font/chalkboard"
             android:layout_marginLeft="50dp"
             android:layout_marginTop="90dp"
             android:text="TextView" />
+
+        <com.kizitonwose.calendarview.CalendarView
+            android:id="@+id/calendarView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_below="@+id/textView"
+            app:cv_dayViewResource="@layout/calendar_day_layout"
+            />
     </RelativeLayout>
 
 

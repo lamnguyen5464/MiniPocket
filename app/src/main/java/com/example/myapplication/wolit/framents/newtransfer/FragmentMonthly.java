@@ -1,28 +1,32 @@
-package com.example.myapplication.wolit.framents;
+package com.example.myapplication.wolit.framents.newtransfer;
 
 import android.content.Context;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 
 import com.example.myapplication.wolit.R;
-import com.example.myapplication.wolit.model.MonthlyDetail;
+import com.example.myapplication.wolit.model.tranferdetail.MonthlyDetail;
 
 
 public class FragmentMonthly extends Fragment implements CompoundButton.OnClickListener, CompoundButton.OnLongClickListener {
     private RelativeLayout background;
     private boolean isEarningMode;
     private Context context;
+    private int colorCode;
     public FragmentMonthly(Context context, boolean isEarningMode){
         this.isEarningMode = isEarningMode;
         this.context = context;
+        this.colorCode = (this.isEarningMode) ? ContextCompat.getColor(context, R.color.GREEN) : ContextCompat.getColor(context, R.color.RED);
+
     }
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -34,12 +38,9 @@ public class FragmentMonthly extends Fragment implements CompoundButton.OnClickL
 
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_monthly, container, false);
-        background = view.findViewById(R.id.background);
-        if (isEarningMode){
-            background.setBackgroundResource(R.drawable.custom_input_green);
-        }else{
-            background.setBackgroundResource(R.drawable.custom_input_red);
-        }
+
+        ((TextView)view.findViewById(R.id.labelDateOfMonth)).setTextColor(colorCode);
+        ((TextView)view.findViewById(R.id.labelDateStart)).setTextColor(colorCode);
         //reset detail
         MonthlyDetail.getRecentDetail().reset();
 

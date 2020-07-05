@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="120dp"
+    android:orientation="horizontal"
+    android:background="@color/BACKGROUND"
+    android:paddingRight="15dp"
+    android:paddingLeft="15dp"
+    android:paddingBottom="10dp"
+    >
+
+    <RelativeLayout
+        android:id="@+id/background"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/custom_background_listcell"
+        android:padding="20dp"
+        android:foreground="?attr/selectableItemBackground"
+        >
+        <TextView
+            android:id="@+id/labelValue"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/WHITE"
+            android:layout_alignParentRight="true"
+            android:textSize="25dp"
+            android:fontFamily="@font/math_tapping"
+            android:text="100.000" />
+
+        <TextView
+            android:id="@+id/labelNote"
+            android:layout_width="200dp"
+            android:layout_height="wrap_content"
+            android:textColor="@color/WHITE"
+            android:layout_below="@+id/labelValue"
+            android:layout_alignParentRight="true"
+            android:textAlignment="textEnd"
+            android:layout_toRightOf="@+id/labelMonthYear"
+            android:layout_marginLeft="20dp"
+            android:textSize="17dp"
+            android:fontFamily="@font/chalkboard"
+            android:text="Mua tra sua" />
+        <TextView
+            android:id="@+id/labelMonthYear"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/WHITE"
+            android:textSize="20sp"
+            android:layout_centerVertical="true"
+            android:layout_toRightOf="@+id/labelDate"
+            android:fontFamily="@font/math_tapping"
+            android:text="/05/2020" />
+        <TextView
+            android:id="@+id/labelDate"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/WHITE"
+            android:layout_centerVertical="true"
+            android:textSize="60dp"
+            android:fontFamily="@font/math_tapping"
+            android:text="25" />
+
+    </RelativeLayout>
+
+
+</RelativeLayout>

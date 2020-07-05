@@ -4,83 +4,87 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".framents.FragmentEveryNDay">
+    tools:context=".framents.newtransfer.FragmentEveryNDay">
+
     <RelativeLayout
         android:id="@+id/background"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@drawable/custom_input_green"
         android:layout_below="@+id/layoutKindOfFrequence"
         android:layout_marginLeft="10dp"
         android:layout_marginRight="10dp"
-        android:padding="10dp"
-        >
+        android:background="@drawable/custom_background_white"
+        android:padding="10dp">
+
         <TextView
             android:id="@+id/labelNumOfDays"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:fontFamily="@font/chalkboard"
             android:text="Num of days:"
             android:textColor="@color/GRAY"
-            android:fontFamily="@font/chalkboard"
-            android:textSize="15sp"
-            />
-        <EditText
-            android:id="@+id/inputNumOfDay"
+            android:textSize="15sp" />
+
+        <TextView
+            android:id="@+id/pickerNumOfDays"
             android:layout_width="60dp"
             android:layout_height="60dp"
-            android:hint="5"
-            android:padding="10dp"
-            android:textSize="17dp"
             android:layout_below="@+id/labelNumOfDays"
             android:layout_centerHorizontal="true"
-            android:textColor="@color/GRAY"
             android:background="@drawable/custom_background_white"
             android:fontFamily="@font/chalkboard"
-            android:inputType="numberDecimal" />
+            android:padding="10dp"
+            android:text="1"
+            android:textColor="@color/WHITE"
+            android:textSize="20dp" />
 
         <ImageButton
             android:id="@+id/incBt"
             android:layout_width="30dp"
             android:layout_height="30dp"
+            android:layout_alignTop="@+id/pickerNumOfDays"
             android:layout_marginLeft="2dp"
-            android:layout_toRightOf="@+id/inputNumOfDay"
-            android:layout_alignTop="@+id/inputNumOfDay"
+            android:layout_toRightOf="@+id/pickerNumOfDays"
             android:background="@drawable/custom_background_white"
-            android:src="@drawable/ic_arrow_drop_up_black_24dp"/>
+            android:foreground="?attr/selectableItemBackground"
+            android:src="@drawable/icon_arrow_up" />
 
         <ImageButton
             android:id="@+id/decBt"
             android:layout_width="30dp"
             android:layout_height="30dp"
             android:layout_alignLeft="@+id/incBt"
-            android:layout_alignBottom="@+id/inputNumOfDay"
+            android:layout_alignBottom="@+id/pickerNumOfDays"
             android:background="@drawable/custom_background_white"
-            android:src="@drawable/ic_arrow_drop_down_black_24dp" />
+            android:foreground="?attr/selectableItemBackground"
+            android:src="@drawable/icon_arrow_down" />
+
         <TextView
             android:id="@+id/labelDateStart"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/inputNumOfDay"
+            android:layout_below="@+id/pickerNumOfDays"
             android:layout_marginTop="10dp"
+            android:fontFamily="@font/chalkboard"
             android:text="From:"
             android:textColor="@color/GRAY"
-            android:fontFamily="@font/chalkboard"
-            android:textSize="15sp"
-            />
+            android:textSize="15sp" />
+
         <Button
             android:id="@+id/startDate"
             android:layout_width="120dp"
             android:layout_height="50dp"
-            android:layout_toLeftOf="@+id/arrow"
             android:layout_alignTop="@+id/arrow"
-            android:textSize="15sp"
-            android:textColor="@color/GRAY"
-            android:fontFamily="@font/chalkboard"
-            android:text="__/__/____"
-            android:background="@drawable/custom_background_white"
-            android:padding="10dp"
             android:layout_marginRight="10dp"
-            />
+            android:layout_toLeftOf="@+id/arrow"
+            android:background="@drawable/custom_background_white"
+            android:fontFamily="@font/chalkboard"
+            android:foreground="?attr/selectableItemBackground"
+            android:padding="10dp"
+            android:text="__/__/____"
+            android:textColor="@color/WHITE"
+            android:textSize="15sp" />
+
         <ImageView
             android:id="@+id/arrow"
             android:layout_width="wrap_content"
@@ -88,26 +92,27 @@
             android:layout_below="@+id/labelDateStart"
             android:layout_centerHorizontal="true"
             android:background="@android:color/transparent"
-            android:src="@drawable/ic_arrow_forward_black_24dp" />
+            android:src="@drawable/icon_arrow_white" />
+
         <Button
             android:id="@+id/endDate"
             android:layout_width="120dp"
             android:layout_height="50dp"
-            android:layout_toRightOf="@+id/arrow"
             android:layout_alignTop="@+id/arrow"
-            android:textSize="15sp"
-            android:textColor="@color/GRAY"
-            android:fontFamily="@font/chalkboard"
-            android:text="__/__/____"
-            android:background="@drawable/custom_background_white"
-            android:padding="10dp"
             android:layout_marginLeft="10dp"
-            />
+            android:layout_toRightOf="@+id/arrow"
+            android:background="@drawable/custom_background_white"
+            android:fontFamily="@font/chalkboard"
+            android:foreground="?attr/selectableItemBackground"
+            android:padding="10dp"
+            android:text="__/__/____"
+            android:textColor="@color/WHITE"
+            android:textSize="15sp" />
+
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/arrow"
-            />
+            android:layout_below="@+id/arrow" />
     </RelativeLayout>
 
 </FrameLayout>

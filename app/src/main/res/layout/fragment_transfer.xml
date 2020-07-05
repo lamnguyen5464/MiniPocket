@@ -9,19 +9,47 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@drawable/custom_background_fragment"
+        android:background="@drawable/custom_background_white"
         >
+
+        <RelativeLayout
+            android:id="@+id/header"
+            android:layout_width="match_parent"
+            android:layout_height="70dp"
+            android:background="@drawable/custom_background_header"
+            android:padding="10dp"
+            >
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="20dp"
+                android:layout_centerVertical="true"
+                android:text="Transaction"
+                android:textColor="@color/WHITE"
+                android:fontFamily="@font/math_tapping"
+                android:textSize="25sp"
+                />
+        </RelativeLayout>
+
+        <com.baoyz.swipemenulistview.SwipeMenuListView
+            android:id="@+id/listViewTransfer"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_below="@+id/header"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="40dp"
+            />
         <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:id="@+id/floatBtAddNew"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:backgroundTint="@color/GREEN"
-            android:clickable="true"
             android:layout_alignParentBottom="true"
             android:layout_alignParentRight="true"
             android:layout_marginRight="10dp"
             android:layout_marginBottom="10dp"
-            android:src="@drawable/ic_add_circle_outline_black_24dp" />
+            android:foreground="?attr/selectableItemBackground"
+            android:src="@drawable/icon_add" />
     </RelativeLayout>
 
 </FrameLayout>

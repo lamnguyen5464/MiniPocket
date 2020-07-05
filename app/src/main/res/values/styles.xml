@@ -11,7 +11,7 @@
     <style name="Widget.BottomNavigationView"
         parent="Widget.Design.BottomNavigationView">
         <item name="fontFamily">@font/chalkboard</item>
-        <item name="colorPrimary">@color/GRAY</item>
+        <item name="colorPrimary">@color/WHITE</item>
     </style>
 
     <style name="DatePickerDialogTheme" parent="Theme.AppCompat.Dialog">
@@ -20,5 +20,12 @@
         <item name="android:textColor">@color/WHITE</item>
         <item name="cornerRadius">25dp</item>
         <item name="fontFamily">@font/chalkboard</item>
+    </style>
+
+    <style name="YellowCheck">
+        <item name="colorAccent">@color/YELLOW</item>
+    </style>
+    <style name="RedCheck">
+        <item name="colorAccent">@color/RED</item>
     </style>
 </resources>

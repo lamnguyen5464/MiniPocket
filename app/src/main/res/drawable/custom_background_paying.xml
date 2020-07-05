@@ -1,6 +1,6 @@
 <selector xmlns:android="http://schemas.android.com/apk/res/android">
     <item
-        android:state_checked="true"
+        android:state_pressed="true"
         >
         <layer-list xmlns:android="http://schemas.android.com/apk/res/android">
             <item>
@@ -11,32 +11,32 @@
             </item>
             <item android:top="2dp">
                 <shape xmlns:android="http://schemas.android.com/apk/res/android">
-                    <solid android:color="#000000"/>
+                    <solid android:color="@color/RED_DARK"/>
                     <corners android:radius="5dp"/>
                 </shape>
             </item>
-            <item android:top="2dp"
+            <item android:top="1dp"
                 android:bottom="1dp">
                 <shape xmlns:android="http://schemas.android.com/apk/res/android">
-                    <solid android:color="@color/GRAY"/>
+                    <solid android:color="@color/RED"/>
                     <corners android:radius="5dp"/>
                 </shape>
             </item>
         </layer-list>
     </item>
     <item
-        android:state_checked="false"
+        android:state_pressed="false"
         >
         <layer-list xmlns:android="http://schemas.android.com/apk/res/android">
             <item>
                 <shape xmlns:android="http://schemas.android.com/apk/res/android">
-                    <solid android:color="#000000"/>
+                    <solid android:color="@color/RED_DARK"/>
                     <corners android:radius="5dp"/>
                 </shape>
             </item>
-            <item android:bottom="3dp">
+            <item android:bottom="2dp">
                 <shape xmlns:android="http://schemas.android.com/apk/res/android">
-                    <solid android:color="@color/GRAY"/>
+                    <solid android:color="@color/RED"/>
                     <corners android:radius="5dp"/>
                 </shape>
             </item>

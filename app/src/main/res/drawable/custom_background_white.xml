@@ -11,14 +11,15 @@
             </item>
             <item android:top="1dp">
                 <shape xmlns:android="http://schemas.android.com/apk/res/android">
-                    <solid android:color="@color/WHITE_DARK"/>
+                    <solid android:color="#000000"/>
                     <corners android:radius="5dp"/>
                 </shape>
             </item>
             <item android:top="1dp"
+                android:right="0.4dp"
                 android:bottom="1dp">
                 <shape xmlns:android="http://schemas.android.com/apk/res/android">
-                    <solid android:color="@color/WHITE"/>
+                    <solid android:color="@color/GRAY"/>
                     <corners android:radius="5dp"/>
                 </shape>
             </item>
@@ -30,13 +31,14 @@
         <layer-list xmlns:android="http://schemas.android.com/apk/res/android">
             <item>
                 <shape xmlns:android="http://schemas.android.com/apk/res/android">
-                    <solid android:color="@color/WHITE_DARK"/>
+                    <solid android:color="#000000"/>
                     <corners android:radius="5dp"/>
                 </shape>
             </item>
-            <item android:bottom="2dp">
+            <item android:bottom="2dp"
+                android:right="0.4dp">
                 <shape xmlns:android="http://schemas.android.com/apk/res/android">
-                    <solid android:color="@color/WHITE"/>
+                    <solid android:color="@color/GRAY"/>
                     <corners android:radius="5dp"/>
                 </shape>
             </item>
