@@ -10,7 +10,6 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@drawable/custom_background_white">
-
         <RelativeLayout
             android:id="@+id/header"
             android:layout_width="match_parent"
@@ -24,23 +23,10 @@
                 android:layout_centerVertical="true"
                 android:layout_marginLeft="20dp"
                 android:fontFamily="@font/math_tapping"
-                android:text="Your status"
+                android:text="Cloud"
                 android:textColor="@color/WHITE"
                 android:textSize="25sp" />
         </RelativeLayout>
-
-        <TextView
-            android:id="@+id/yourMoney"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="50dp"
-            android:layout_marginTop="90dp"
-            android:fontFamily="@font/chalkboard"
-            android:text="TextView"
-            android:textColor="@color/YELLOW"
-            android:textSize="30dp" />
-
-
     </RelativeLayout>
 
 

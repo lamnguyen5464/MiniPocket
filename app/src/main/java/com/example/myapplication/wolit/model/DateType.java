@@ -24,8 +24,9 @@ public class DateType extends RealmObject {
         return recentDate;
     }
     public static DateType getToday(){
-        Calendar calendar = Calendar.getInstance();
-        return new DateType(calendar.get(Calendar.DAY_OF_MONTH), calendar.get(Calendar.MONTH)+1, calendar.get(Calendar.YEAR));
+        return new DateType(16, 7, 2020);
+//        Calendar calendar = Calendar.getInstance();
+//        return new DateType(calendar.get(Calendar.DAY_OF_MONTH), calendar.get(Calendar.MONTH)+1, calendar.get(Calendar.YEAR));
     }
     public DateType(int date, int month, int year){
         this.date = date;
@@ -59,6 +60,9 @@ public class DateType extends RealmObject {
         this.month = date.getMonth();
         this.year = date.getYear();
         this.dateCode = getDateCode();
+    }
+    public boolean isDifferent(DateType date){
+        return (this.date != date.date || this.month != date.month || this.year != date.year);
     }
     public int getYear() {
         return year;
@@ -127,6 +131,17 @@ public class DateType extends RealmObject {
             e.printStackTrace();
         }
         return 0;
+    }
+    public static String numToStringDay(int num){
+        switch (num){
+            case 1: return "Mon";
+            case 2: return "Tue";
+            case 3: return "Wed";
+            case 4: return "Thu";
+            case 5: return "Fri";
+            case 6: return "Sat";
+        }
+        return "Sun";
     }
     public void setDate(int date) {
         this.date = date;

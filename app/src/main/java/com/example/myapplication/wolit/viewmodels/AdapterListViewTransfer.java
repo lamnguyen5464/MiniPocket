@@ -1,4 +1,4 @@
-package com.example.myapplication.wolit.activities;
+package com.example.myapplication.wolit.viewmodels;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
@@ -30,18 +30,56 @@ public class AdapterListViewTransfer extends BaseAdapter {
     Context context;
     LayoutInflater layoutInflater;
     RealmResults<NonRepeatedDetail> arrayTransactions;
+    int firstIndex, lastIndex;
     public AdapterListViewTransfer(Context context, RealmResults<NonRepeatedDetail> arrayTransactions){
         this.context = context;
         this.arrayTransactions = arrayTransactions;
         this.layoutInflater = LayoutInflater.from(context);
-//        for(NonRepeatedDetail tmp : arrayTransactions){
-//            Log.d("@@@", tmp.getValue()+" " +tmp.getNote()+" " +tmp.getDate().getString());
-//        }
+        firstIndex = -1;
+        lastIndex = -1;
 
+        int i = 0;
+        for(NonRepeatedDetail tmp : arrayTransactions){
+            Log.d("@@@", i++ + ") " +tmp.getValue()+" " +tmp.getNote()+" " +tmp.getDate().getString());
+        }
+
+    }
+    public int lowerBound(DateType date){
+        if (arrayTransactions.size() == 0) return -1;
+        int left = 0, right = arrayTransactions.size() - 1;
+        while (left < right){           //lower bound
+            int mid = (left + right) / 2;
+            if (arrayTransactions.get(mid).getDate().getDateCode() >= date.getDateCode())
+                right = mid;
+            else left = mid + 1;
+        }
+        if (arrayTransactions.get(left).getDate().getDateCode() != date.getDateCode())
+            return -1;
+        return left;
+    }
+    public int upperBound(DateType date){
+        if (arrayTransactions.size() == 0) return -1;
+        int left = 0, right = arrayTransactions.size() - 1;
+        while (left < right){           //upper bound
+            int mid = (left + right + 1) / 2;
+            if (arrayTransactions.get(mid).getDate().getDateCode() <= date.getDateCode())
+                left = mid;
+            else right = mid - 1;
+        }
+        if (arrayTransactions.get(left).getDate().getDateCode() != date.getDateCode())
+            return -1;
+        return left;
+    }
+    public void updateBoundOfDate(DateType date){
+
+        this.firstIndex = lowerBound(date);
+        this.lastIndex = upperBound(date);
+        notifyDataSetChanged();
+//        Log.d("@@@", this.firstIndex + " " + this.lastIndex);
     }
     @Override
     public int getCount() {
-        return arrayTransactions.size();
+        return (firstIndex == -1) ? 0 : (lastIndex - firstIndex + 1);
     }
 
     @Override
@@ -75,7 +113,7 @@ public class AdapterListViewTransfer extends BaseAdapter {
             viewHolder = (ViewHolder)convertView.getTag();
         }
         DecimalFormat decimalFormat = new DecimalFormat("###,###,###");
-        double value = arrayTransactions.get(arrayTransactions.size()-1-position).getValue();
+        double value = arrayTransactions.get(lastIndex - position).getValue();
         if (value < 0){
             viewHolder.labelValue.setTextColor(ContextCompat.getColor(context, R.color.RED));
             viewHolder.labelNote.setTextColor(ContextCompat.getColor(context, R.color.RED));
@@ -85,11 +123,10 @@ public class AdapterListViewTransfer extends BaseAdapter {
             viewHolder.labelNote.setTextColor(ContextCompat.getColor(context, R.color.GREEN));
         }
         viewHolder.labelValue.setText((value > 0 ? "+" : "")+decimalFormat.format(value));
-        viewHolder.labelNote.setText(arrayTransactions.get(arrayTransactions.size()-1-position).getNote());
-        DateType tmpDate = arrayTransactions.get(arrayTransactions.size()-1-position).getDate();
+        viewHolder.labelNote.setText(arrayTransactions.get(lastIndex - position).getNote());
+        DateType tmpDate = arrayTransactions.get(lastIndex - position).getDate();
         viewHolder.labelDate.setText((tmpDate.getDate()<10 ? "0" : "") + tmpDate.getDate());
         viewHolder.labelMonthYear.setText("/"+ tmpDate.getMonth()+"/"+tmpDate.getYear());
-
         //col
         return convertView;
     }
@@ -100,6 +137,6 @@ public class AdapterListViewTransfer extends BaseAdapter {
         TextView labelDate;
     }
     public void removePos(int pos){
-        arrayTransactions.get(arrayTransactions.size()-1-pos).removeFromDatabase();
+        arrayTransactions.get(lastIndex - pos).removeFromDatabase();
     }
 }

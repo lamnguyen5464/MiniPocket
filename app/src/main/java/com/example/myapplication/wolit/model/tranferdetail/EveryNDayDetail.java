@@ -37,6 +37,11 @@ public class EveryNDayDetail extends RealmObject implements TransactionDetail {
         }
         return recentWeeklyDetail;
     }
+
+    @Override
+    public String is() {
+        return "EveryNDayDetail";
+    }
     @Override
     public void setBasicInfo(double value, String note){
         this.value = value;
@@ -90,13 +95,13 @@ public class EveryNDayDetail extends RealmObject implements TransactionDetail {
         while (fromDate.getDateCode() <= toDate.getDateCode()){
             if (this.getEndDate().getDateCode() < fromDate.getDateCode()){
                 //delete
-                Log.d("@@@", "delete!");
+//                Log.d("@@@", "delete!");
                 return  false;
             }else{
                 if (this.getStartDate().getDateCode() <= fromDate.getDateCode() && this.getStartDate().countDeltaDays(fromDate) % this.getNumOfDays() == 0){
                     //the transaction happens on fromDate
                     NonRepeatedDetail.createAndAddToRealm(this.getValue(), this.getNote(), fromDate);
-                    Log.d("@@@", "----->"+fromDate.getDate() + " " + fromDate.getMonth() + " " + fromDate.getYear()+ "-" + this.getValue());
+//                    Log.d("@@@", "----->"+fromDate.getDate() + " " + fromDate.getMonth() + " " + fromDate.getYear()+ "-" + this.getValue());
                 }
             }
             fromDate.goToTheNextDay();
@@ -107,14 +112,16 @@ public class EveryNDayDetail extends RealmObject implements TransactionDetail {
     public static void updateTransactionFromRealm(DateType fromDate, DateType toDate){
         //Every N days
         RealmResults<EveryNDayDetail> resultsEveryNDays = RealmApdapter.getInstance().where(EveryNDayDetail.class).findAll();
-        Log.d("@@@", "Size of Every N day: " + resultsEveryNDays.size());
-        for(int i = 0; i < resultsEveryNDays.size(); i++ ){
-            EveryNDayDetail st = resultsEveryNDays.get(i);
-            Log.d("@@@", i + ") " + st.getValue() + " " + st.getNote() + " " +st.getStartDate().getDateCode()+" "+st.getEndDate().getDateCode());
-        }
+//        Log.d("@@@", "Size of Every N day: " + resultsEveryNDays.size());
+//        for(int i = 0; i < resultsEveryNDays.size(); i++ ){
+//            EveryNDayDetail st = resultsEveryNDays.get(i);
+//            Log.d("@@@", i + ") " + st.getValue() + " " + st.getNote() + " " +st.getStartDate().getDateCode()+" "+st.getEndDate().getDateCode());
+//        }
         for(int i = resultsEveryNDays.size() - 1; i >= 0 ; i-- ){
             EveryNDayDetail tmp = resultsEveryNDays.get(i);
-            if (!tmp.generateTransaction(fromDate, toDate)){
+            DateType tmpDate = new DateType(fromDate);
+            if (tmpDate.isEmptyDate()) tmpDate.set(tmp.getStartDate());
+            if (!tmp.generateTransaction(tmpDate, toDate)){
                 tmp.removeFromDatabase();
             }
         }

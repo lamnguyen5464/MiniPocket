@@ -2,6 +2,7 @@ package com.example.myapplication.wolit.model.tranferdetail;
 
 import android.util.Log;
 
+import com.example.myapplication.wolit.model.CurrentStatus;
 import com.example.myapplication.wolit.model.DateType;
 import com.example.myapplication.wolit.realm.RealmApdapter;
 
@@ -39,14 +40,24 @@ public class NonRepeatedDetail extends RealmObject implements TransactionDetail 
     }
 
     @Override
+    public DateType getEndDate() {
+        return null;
+    }
+
+    @Override
+    public String is() {
+        return "NonRepeatedDetail";
+    }
+
+    @Override
     public void reset(){
         date.reset();
     }
 
     @Override
     public boolean isNotValid() {
-        Log.d("@@@",value+" " + note+ " " + date.getString());
-        Log.d("@@@",this.value+"_" + this.note+ " " + this.date.getString());
+//        Log.d("@@@",value+" " + note+ " " + date.getString());
+//        Log.d("@@@",this.value+"_" + this.note+ " " + this.date.getString());
         if (this.value == 0 || this.note == "") return true;
         if (this.date.isEmptyDate()) return true;
         return false;
@@ -61,10 +72,22 @@ public class NonRepeatedDetail extends RealmObject implements TransactionDetail 
                 RealmApdapter.getInstance().copyToRealm(tmp);
             }
         });
+
+        //update to currentMoney
+        CurrentStatus currentStatus = CurrentStatus.getSharedValue();
+        if (currentStatus != null) {
+            currentStatus.updateMoney(currentStatus.getMyMoney() + this.value, currentStatus.getCurrencyType());
+        }
     }
 
     @Override
     public void removeFromDatabase() {
+        //update currentMoney
+        CurrentStatus currentStatus = CurrentStatus.getSharedValue();
+        if (currentStatus != null){
+            currentStatus.updateMoney(currentStatus.getMyMoney() - this.value, currentStatus.getCurrencyType());
+        }
+
         RealmApdapter.getInstance().beginTransaction();
         this.getDate().deleteFromRealm();
         this.deleteFromRealm();

@@ -36,6 +36,10 @@ public class MonthlyDetail extends RealmObject implements TransactionDetail {
         return recentWeeklyDetail;
     }
     @Override
+    public String is() {
+        return "MonthlyDetail";
+    }
+    @Override
     public void setBasicInfo(double value, String note){
         this.value = value;
         this.note = note;
@@ -81,13 +85,13 @@ public class MonthlyDetail extends RealmObject implements TransactionDetail {
         while (fromDate.getDateCode() <= toDate.getDateCode()) {
             if (this.getEndDate().getDateCode() < fromDate.getDateCode()) {
                 //delete
-                Log.d("@@@", "delete!");
+//                Log.d("@@@", "delete!");
                 return false;
             } else {
                 if (this.getStartDate().getDateCode() <= fromDate.getDateCode() && this.getDateOfMonth() == fromDate.getDate()) {
                     //the transaction happens on fromDate
                     NonRepeatedDetail.createAndAddToRealm(this.getValue(), this.getNote(), fromDate);
-                    Log.d("@@@", "----->"+fromDate.getDate() + " " + fromDate.getMonth() + " " + fromDate.getYear() + "-" + this.getValue());
+//                    Log.d("@@@", "----->"+fromDate.getDate() + " " + fromDate.getMonth() + " " + fromDate.getYear() + "-" + this.getValue());
                 }
             }
             fromDate.goToTheNextDay();
@@ -99,13 +103,15 @@ public class MonthlyDetail extends RealmObject implements TransactionDetail {
         //Monthly
         RealmResults<MonthlyDetail> resultsMonthly = RealmApdapter.getInstance().where(MonthlyDetail.class).findAll();
         //log
-        Log.d("@@@", "Size of monthlyDetail: " + resultsMonthly.size());
-        for(MonthlyDetail tmp: resultsMonthly ){
-            Log.d("@@@", ") " + tmp.getValue() + " " + tmp.getNote() + " " +tmp.getDateOfMonth()+" " +tmp.getStartDate().getDateCode()+" "+tmp.getEndDate().getDateCode());
-        }
+//        Log.d("@@@", "Size of monthlyDetail: " + resultsMonthly.size());
+//        for(MonthlyDetail tmp: resultsMonthly ){
+//            Log.d("@@@", ") " + tmp.getValue() + " " + tmp.getNote() + " " +tmp.getDateOfMonth()+" " +tmp.getStartDate().getDateCode()+" "+tmp.getEndDate().getDateCode());
+//        }
         for(int i = resultsMonthly.size()-1; i >= 0 ; i-- ){
             MonthlyDetail tmp = resultsMonthly.get(i);
-            if (!tmp.generateTransaction(fromDate, toDate)){
+            DateType tmpDate = new DateType(fromDate);
+            if (tmpDate.isEmptyDate()) tmpDate.set(tmp.getStartDate());
+            if (!tmp.generateTransaction(tmpDate, toDate)){
                 tmp.removeFromDatabase();
             }
         }

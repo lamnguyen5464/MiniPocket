@@ -8,20 +8,14 @@ import android.util.Log;
 import android.view.MenuItem;
 
 import com.example.myapplication.wolit.R;
-import com.example.myapplication.wolit.framents.FragmentMain;
+import com.example.myapplication.wolit.framents.main.FragmentCloudData;
+import com.example.myapplication.wolit.framents.main.FragmentCurrentStatus;
 import com.example.myapplication.wolit.framents.FragmentFunc;
-import com.example.myapplication.wolit.framents.FragmentTransfer;
+import com.example.myapplication.wolit.framents.main.FragmentTransfer;
 import com.example.myapplication.wolit.model.CurrentStatus;
-import com.example.myapplication.wolit.model.DateType;
-import com.example.myapplication.wolit.model.tranferdetail.EveryNDayDetail;
-import com.example.myapplication.wolit.model.tranferdetail.NonRepeatedDetail;
-import com.example.myapplication.wolit.model.tranferdetail.WeeklyDetail;
 import com.example.myapplication.wolit.realm.RealmApdapter;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.jakewharton.threetenabp.AndroidThreeTen;
-
-import io.realm.Realm;
-import io.realm.RealmResults;
 
 public class MainActivity extends AppCompatActivity {
     BottomNavigationView bottomNavigationView;
@@ -35,7 +29,10 @@ public class MainActivity extends AppCompatActivity {
                     fragmentFunc.loadFragment(new FragmentTransfer(), getSupportFragmentManager(), R.id.frameLayout);
                     return true;
                 case R.id.frag2:
-                    fragmentFunc.loadFragment(FragmentMain.getInstance(), getSupportFragmentManager(),  R.id.frameLayout);
+                    fragmentFunc.loadFragment(new FragmentCurrentStatus(), getSupportFragmentManager(),  R.id.frameLayout);
+                    return true;
+                case R.id.frag3:
+                    fragmentFunc.loadFragment(new FragmentCloudData(), getSupportFragmentManager(), R.id.frameLayout);
                     return true;
             }
             return false;
@@ -50,12 +47,21 @@ public class MainActivity extends AppCompatActivity {
 
         bottomNavigationView.setOnNavigationItemSelectedListener(navigationItemSelectedListener);
         bottomNavigationView.setSelectedItemId(R.id.frag2);
-        fragmentFunc.loadFragment(FragmentMain.getInstance(), getSupportFragmentManager(),  R.id.frameLayout);
+        fragmentFunc.loadFragment(FragmentCurrentStatus.getInstance(), getSupportFragmentManager(),  R.id.frameLayout);
 
 
-        //*
+//        *
         RealmApdapter.initIntance(this);
         AndroidThreeTen.init(this);
+        CurrentStatus.initSharedValue(this);
+
+
+        CurrentStatus.update();
+
+        Log.d("@@@",CurrentStatus.getSharedValue().getUpToDate().getDate() + " " +CurrentStatus.getSharedValue().getUpToDate().getMonth());
+
+
+
 //        DateType fromDate = new DateType(1, 7, 2020);
 //        DateType toDate = new DateType(31, 7, 2020);
 //        Log.d("@@@", fromDate.countDeltaDays(toDate)+"");

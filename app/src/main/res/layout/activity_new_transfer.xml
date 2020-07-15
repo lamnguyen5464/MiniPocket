@@ -31,7 +31,7 @@
                 android:layout_width="100dp"
                 android:layout_height="100dp"
                 android:layout_centerHorizontal="true"
-                android:track="@drawable/custom_switch"
+                android:track="@drawable/custom_switch_earn_pay"
                 android:textSize="25dp"
                 android:onClick="@{()->newTransfer.onSwitchEarningClicked()}"
                 android:checked="@{(newTransfer.getNewTranferModel().isEarning)}"

@@ -11,6 +11,7 @@
     <style name="Widget.BottomNavigationView"
         parent="Widget.Design.BottomNavigationView">
         <item name="fontFamily">@font/chalkboard</item>
+        <item name="colorPrimaryDark">@color/WHITE_DARK</item>
         <item name="colorPrimary">@color/WHITE</item>
     </style>
 

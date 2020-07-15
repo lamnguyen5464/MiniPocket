@@ -12,6 +12,7 @@ import com.example.myapplication.wolit.model.DateType;
 import com.example.myapplication.wolit.realm.RealmApdapter;
 
 import java.util.Calendar;
+import java.util.Date;
 
 import io.realm.Realm;
 import io.realm.RealmAsyncTask;
@@ -51,13 +52,13 @@ public class WeeklyDetail extends RealmObject implements TransactionDetail {
         while (fromDate.getDateCode() <= toDate.getDateCode()) {
             if (this.getEndDate().getDateCode() < fromDate.getDateCode()) {
                 //delete
-                Log.d("@@@", "delete!");
+//                Log.d("@@@", "delete!");
                 return false;
             } else {
                 if (this.getStartDate().getDateCode() <= fromDate.getDateCode() && this.getDayOfWeekCode().charAt(fromDate.getDayOfWeek()) == '1') {
                     //the transaction happens on fromDate
                     NonRepeatedDetail.createAndAddToRealm(this.getValue(), this.getNote(), fromDate);
-                    Log.d("@@@", "----->"+fromDate.getDate() + " " + fromDate.getMonth() + " " + fromDate.getYear() + "-" + this.getValue());
+//                    Log.d("@@@", "----->"+fromDate.getDate() + " " + fromDate.getMonth() + " " + fromDate.getYear() + "-" + this.getValue());
                 }
             }
             fromDate.goToTheNextDay();
@@ -68,14 +69,16 @@ public class WeeklyDetail extends RealmObject implements TransactionDetail {
     public static void updateTransactionFromRealm(DateType fromDate, DateType toDate) {
 //        //from Weeklydetail
         RealmResults<WeeklyDetail> resultsWeekly = RealmApdapter.getInstance().where(WeeklyDetail.class).findAll();
-        Log.d("@@@", "Size of Weekly Details: " + resultsWeekly.size());
-        for(int i = 0; i < resultsWeekly.size(); i++ ){
-            WeeklyDetail st = resultsWeekly.get(i);
-            Log.d("@@@", i + ") " + st.getValue() + " " + st.getNote() + " " + st.getDayOfWeekCode() + " " +st.getStartDate().getDateCode()+" "+st.getEndDate().getDateCode() );
-        }
+//        Log.d("@@@", "Size of Weekly Details: " + resultsWeekly.size());
+//        for(int i = 0; i < resultsWeekly.size(); i++ ){
+//            WeeklyDetail st = resultsWeekly.get(i);
+//            Log.d("@@@", i + ") " + st.getValue() + " " + st.getNote() + " " + st.getDayOfWeekCode() + " " +st.getStartDate().getDateCode()+" "+st.getEndDate().getDateCode() );
+//        }
         for(int i = resultsWeekly.size()-1; i >= 0 ; i-- ) {
             WeeklyDetail tmp = resultsWeekly.get(i);
-            if (!tmp.generateTransaction(fromDate, toDate)){
+            DateType tmpDate = new DateType(fromDate);
+            if (tmpDate.isEmptyDate()) tmpDate.set(tmp.getStartDate());
+            if (!tmp.generateTransaction(tmpDate, toDate)){
                 tmp.removeFromDatabase();
             }
         }
@@ -146,6 +149,11 @@ public class WeeklyDetail extends RealmObject implements TransactionDetail {
 
     public DateType getStartDate() {
         return startDate;
+    }
+
+    @Override
+    public String is() {
+        return "WeeklyDetail";
     }
 
     public void setStartDate(DateType startDate) {

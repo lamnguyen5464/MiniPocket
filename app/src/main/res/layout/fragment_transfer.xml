@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".framents.FragmentTransfer">
+    tools:context=".framents.main.FragmentTransfer">
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -19,16 +19,27 @@
             android:background="@drawable/custom_background_header"
             android:padding="10dp"
             >
-            <TextView
+
+            <Switch
+                android:id="@+id/switchListView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
                 android:layout_marginLeft="20dp"
+                android:textColor="@color/BLUE"
+                android:fontFamily="@font/math_tapping"
+                android:track="@drawable/custom_switch_pending"
+                android:textSize="25dp" />
+            <TextView
+                android:id="@+id/title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
                 android:text="Transaction"
-                android:textColor="@color/WHITE"
+                android:textColor="@color/BLUE"
+                android:layout_toRightOf="@id/switchListView"
                 android:fontFamily="@font/math_tapping"
-                android:textSize="25sp"
-                />
+                android:textSize="25dp"/>
         </RelativeLayout>
 
         <com.baoyz.swipemenulistview.SwipeMenuListView
@@ -36,9 +47,28 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_below="@+id/header"
+            android:layout_above="@+id/calendarView"
             android:layout_marginTop="10dp"
-            android:layout_marginBottom="40dp"
+            android:layout_marginBottom="10dp"
             />
+
+        <com.kizitonwose.calendarview.CalendarView
+            android:id="@+id/calendarView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/custom_background_listcell"
+            android:layout_alignParentBottom="true"
+            app:cv_dayViewResource="@layout/calendar_day_layout"
+            app:cv_orientation="horizontal"
+            app:cv_scrollMode="continuous"
+            app:cv_inDateStyle="none"
+            app:cv_outDateStyle="none"
+            android:layout_marginBottom="10dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            app:cv_maxRowCount="1"
+            />
+
         <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:id="@+id/floatBtAddNew"
             android:layout_width="wrap_content"
