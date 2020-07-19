@@ -1,7 +1,6 @@
 package com.example.myapplication.wolit.framents.main;
 
 import android.content.Intent;
-import android.graphics.Color;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -19,31 +18,24 @@ import com.baoyz.swipemenulistview.SwipeMenu;
 import com.baoyz.swipemenulistview.SwipeMenuCreator;
 import com.baoyz.swipemenulistview.SwipeMenuItem;
 import com.baoyz.swipemenulistview.SwipeMenuListView;
-import com.example.myapplication.wolit.model.CurrentStatus;
 import com.example.myapplication.wolit.model.DateType;
 import com.example.myapplication.wolit.model.DayViewContainer;
-import com.example.myapplication.wolit.model.tranferdetail.TransactionDetail;
 import com.example.myapplication.wolit.viewmodels.AdapterListViewPending;
 import com.example.myapplication.wolit.viewmodels.AdapterListViewTransfer;
 import com.example.myapplication.wolit.activities.NewTransferActivity;
 import com.example.myapplication.wolit.R;
 import com.example.myapplication.wolit.model.tranferdetail.NonRepeatedDetail;
-import com.example.myapplication.wolit.realm.RealmApdapter;
+import com.example.myapplication.wolit.database.RealmApdapter;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.kizitonwose.calendarview.CalendarView;
 import com.kizitonwose.calendarview.model.CalendarDay;
-import com.kizitonwose.calendarview.model.DayOwner;
 import com.kizitonwose.calendarview.ui.DayBinder;
 
 import org.threeten.bp.LocalDate;
 import org.threeten.bp.YearMonth;
 import org.threeten.bp.temporal.WeekFields;
 
-import java.text.DecimalFormat;
-import java.util.List;
 import java.util.Locale;
-
-import io.realm.Sort;
 
 public class FragmentTransfer extends Fragment {
     FloatingActionButton floatingBtAddNew;
@@ -52,8 +44,8 @@ public class FragmentTransfer extends Fragment {
     AdapterListViewPending customPendingList;
     CalendarView calendarView;
     Switch switchListView;
-    TextView labelTitle;
-    DateType selectedDate = DateType.getToday();
+    TextView labelTitle, labelNoTransaction, labelNoRepeatedTransaction;
+    DateType selectedDate = DateType.getRecentDate();
     DayViewContainer preContainer = null;
 //    public static FragmentTransfer instance = null;
 //    public static FragmentTransfer getInstance(){
@@ -67,7 +59,9 @@ public class FragmentTransfer extends Fragment {
         super.onCreate(savedInstanceState);
     }
 
-    private void selectDate(DayViewContainer container, DateType pickDate){
+    private void selectDate(DayViewContainer container, DateType pickDate, boolean haveTransactions){
+        DateType.getRecentDate().set(pickDate);
+        labelNoTransaction.setVisibility((haveTransactions == false) ? View.VISIBLE : View.INVISIBLE);
         if (preContainer != container){
 //            Log.d("@@@", selectedDate.getString());
             selectedDate.set(pickDate);
@@ -90,9 +84,17 @@ public class FragmentTransfer extends Fragment {
         //
         switchListView = view.findViewById(R.id.switchListView);
         labelTitle = view.findViewById(R.id.title);
+        labelNoTransaction = view.findViewById(R.id.labelNoTransaction);
+        labelNoRepeatedTransaction = view.findViewById(R.id.labelNoRepeatedTransaction);
+
 
         //calendar
         calendarView = view.findViewById(R.id.calendarView);
+
+        YearMonth currentMonth = YearMonth.now();
+        calendarView.setup(currentMonth.minusMonths(12), currentMonth.plusMonths(12), WeekFields.of(Locale.getDefault()).getFirstDayOfWeek());
+        calendarView.scrollToDate(LocalDate.of(selectedDate.getYear(), selectedDate.getMonth(), selectedDate.getDate()));
+        calendarView.setDayHeight(150);
         calendarView.setDayBinder(new DayBinder<DayViewContainer>() {
             @NonNull
             @Override
@@ -105,39 +107,28 @@ public class FragmentTransfer extends Fragment {
                 container.labelDate.setText((day.getDate().getDayOfMonth()) + "-" + (day.getDate().getMonthValue()));
                 container.dayOfWeek.setText(DateType.numToStringDay(dateType.getDayOfWeek()));
                 //pick today as default
-                if (preContainer == null && !dateType.isDifferent(selectedDate)){
-                    selectDate(container, dateType);
+                final int numOfTrans = customList.lowerBound(dateType);
+                if (!dateType.isDifferent(selectedDate)){
+                    if (preContainer == null) selectDate(container, dateType, numOfTrans != -1);
                 }
-                if (customList.lowerBound(dateType) != -1)
-                    container.markText.setVisibility(View.VISIBLE);
-                else
-                    container.markText.setVisibility(View.INVISIBLE);
+                container.markText.setVisibility((numOfTrans == -1) ? View.INVISIBLE : View.VISIBLE);
 //                Log.d("@@@", String.valueOf(day.getDate().getDayOfMonth()) + " "+String.valueOf(day.getDate().getMonthValue()) + " "+String.valueOf(day.getDate().getYear()));
                 container.btDayCell.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        selectDate(container, dateType);
-                        if (customList.lowerBound(dateType) != -1)
-                            container.markText.setVisibility(View.VISIBLE);
-                        else
-                            container.markText.setVisibility(View.INVISIBLE);
-//                        customList.notifyDataSetChanged();
+                        selectDate(container, dateType, numOfTrans != -1);
+                        container.markText.setVisibility((numOfTrans != -1) ? View.VISIBLE : View.INVISIBLE);
                     }
                 });
             }
         });
 
-        YearMonth currentMonth = YearMonth.now();
-        calendarView.setup(currentMonth.minusMonths(12), currentMonth.plusMonths(10), WeekFields.of(Locale.getDefault()).getFirstDayOfWeek());
-        calendarView.scrollToMonth(YearMonth.now());
-        calendarView.scrollToDate(LocalDate.now());
-        calendarView.setDayHeight(150);
 
         //set up listView
         listViewTransfer = view.findViewById(R.id.listViewTransfer);
         customList = new AdapterListViewTransfer(
                 getActivity(),
-                RealmApdapter.getInstance().where(NonRepeatedDetail.class).sort("date.dateCode").findAll()
+                RealmApdapter.getAllNonRepeatedList()
         );
         customPendingList = new AdapterListViewPending(
                 getActivity(),
@@ -155,7 +146,7 @@ public class FragmentTransfer extends Fragment {
             public void create(SwipeMenu menu) {
                 SwipeMenuItem deleteItem = new SwipeMenuItem(getActivity());
                 // set item width
-                deleteItem.setWidth((170));
+                deleteItem.setWidth((150));
                 deleteItem.setBackground(getResources().getDrawable(R.drawable.custom_background_paying));
                 // set a icon
                 deleteItem.setIcon(R.drawable.icon_delete);
@@ -187,6 +178,7 @@ public class FragmentTransfer extends Fragment {
                     }else{
                         customPendingList.removePos(position);
                         customPendingList.notifyDataSetChanged();
+                        labelNoRepeatedTransaction.setVisibility((customPendingList.getCount() == 0) ? View.VISIBLE : View.INVISIBLE);
                     }
                 }
                 return false;
@@ -201,7 +193,12 @@ public class FragmentTransfer extends Fragment {
                     calendarView.setVisibility(View.VISIBLE);
                     listViewTransfer.setAdapter(customList);
                     labelTitle.setText("Transaction");
+                    selectDate(preContainer, selectedDate, customList.lowerBound(selectedDate) != -1);
+                    labelNoRepeatedTransaction.setVisibility(View.INVISIBLE);
                 }else{
+                    labelNoTransaction.setVisibility(View.INVISIBLE);
+                    labelNoRepeatedTransaction.setVisibility((customPendingList.getCount() == 0) ? View.VISIBLE : View.INVISIBLE);
+                    Log.d("@@@", customPendingList.getCount()+"");
                     calendarView.setVisibility(View.INVISIBLE);
                     listViewTransfer.setAdapter(customPendingList);
                     labelTitle.setText("Pending");

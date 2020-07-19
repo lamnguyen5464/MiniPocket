@@ -1,10 +1,8 @@
 package com.example.myapplication.wolit.model.tranferdetail;
 
-import android.util.Log;
-
 import com.example.myapplication.wolit.model.CurrentStatus;
 import com.example.myapplication.wolit.model.DateType;
-import com.example.myapplication.wolit.realm.RealmApdapter;
+import com.example.myapplication.wolit.database.RealmApdapter;
 
 import io.realm.Realm;
 import io.realm.RealmObject;

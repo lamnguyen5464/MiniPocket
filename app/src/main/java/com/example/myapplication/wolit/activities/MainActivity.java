@@ -13,7 +13,7 @@ import com.example.myapplication.wolit.framents.main.FragmentCurrentStatus;
 import com.example.myapplication.wolit.framents.FragmentFunc;
 import com.example.myapplication.wolit.framents.main.FragmentTransfer;
 import com.example.myapplication.wolit.model.CurrentStatus;
-import com.example.myapplication.wolit.realm.RealmApdapter;
+import com.example.myapplication.wolit.database.RealmApdapter;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.jakewharton.threetenabp.AndroidThreeTen;
 
@@ -29,7 +29,7 @@ public class MainActivity extends AppCompatActivity {
                     fragmentFunc.loadFragment(new FragmentTransfer(), getSupportFragmentManager(), R.id.frameLayout);
                     return true;
                 case R.id.frag2:
-                    fragmentFunc.loadFragment(new FragmentCurrentStatus(), getSupportFragmentManager(),  R.id.frameLayout);
+                    fragmentFunc.loadFragment(FragmentCurrentStatus.getInstance(), getSupportFragmentManager(),  R.id.frameLayout);
                     return true;
                 case R.id.frag3:
                     fragmentFunc.loadFragment(new FragmentCloudData(), getSupportFragmentManager(), R.id.frameLayout);

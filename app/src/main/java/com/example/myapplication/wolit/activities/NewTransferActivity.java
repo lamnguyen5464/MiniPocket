@@ -12,9 +12,7 @@ import android.widget.Switch;
 
 import com.example.myapplication.wolit.R;
 import com.example.myapplication.wolit.databinding.ActivityNewTransferBinding;
-import com.example.myapplication.wolit.model.CurrentStatus;
 import com.example.myapplication.wolit.model.DateType;
-import com.example.myapplication.wolit.realm.RealmApdapter;
 import com.example.myapplication.wolit.viewmodels.NewTransferViewModel;
 public class NewTransferActivity extends AppCompatActivity {
     Switch switchSelect;

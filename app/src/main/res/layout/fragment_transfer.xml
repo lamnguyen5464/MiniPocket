@@ -42,6 +42,25 @@
                 android:textSize="25dp"/>
         </RelativeLayout>
 
+        <TextView
+            android:id="@+id/labelNoTransaction"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_centerHorizontal="true"
+            android:text="Click + to add new transaction"
+            android:textColor="@color/WHITE_DARK"
+            />
+        <TextView
+            android:id="@+id/labelNoRepeatedTransaction"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_centerHorizontal="true"
+            android:text="Click + to add new repeated transaction"
+            android:visibility="invisible"
+            android:textColor="@color/WHITE_DARK"
+            />
         <com.baoyz.swipemenulistview.SwipeMenuListView
             android:id="@+id/listViewTransfer"
             android:layout_width="match_parent"

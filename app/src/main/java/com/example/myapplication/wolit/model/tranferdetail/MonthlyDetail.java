@@ -2,15 +2,13 @@ package com.example.myapplication.wolit.model.tranferdetail;
 
 import android.app.DatePickerDialog;
 import android.content.Context;
-import android.util.Log;
-import android.util.MonthDisplayHelper;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.Toast;
 
 import com.example.myapplication.wolit.R;
 import com.example.myapplication.wolit.model.DateType;
-import com.example.myapplication.wolit.realm.RealmApdapter;
+import com.example.myapplication.wolit.database.RealmApdapter;
 
 import java.util.Calendar;
 

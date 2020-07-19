@@ -6,9 +6,21 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
 import com.example.myapplication.wolit.R;
+import com.example.myapplication.wolit.model.DateType;
+import com.example.myapplication.wolit.model.DayViewContainer;
+import com.kizitonwose.calendarview.CalendarView;
+import com.kizitonwose.calendarview.model.CalendarDay;
+import com.kizitonwose.calendarview.ui.DayBinder;
+
+import org.threeten.bp.LocalDate;
+import org.threeten.bp.YearMonth;
+import org.threeten.bp.temporal.WeekFields;
+
+import java.util.Locale;
 
 
 public class FragmentCloudData extends Fragment {

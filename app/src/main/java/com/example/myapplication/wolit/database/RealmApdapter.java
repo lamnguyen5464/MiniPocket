@@ -1,18 +1,13 @@
-package com.example.myapplication.wolit.realm;
+package com.example.myapplication.wolit.database;
 
 import android.content.Context;
-import android.util.Log;
 
-import com.example.myapplication.wolit.model.DateType;
 import com.example.myapplication.wolit.model.tranferdetail.EveryNDayDetail;
 import com.example.myapplication.wolit.model.tranferdetail.MonthlyDetail;
 import com.example.myapplication.wolit.model.tranferdetail.NonRepeatedDetail;
 import com.example.myapplication.wolit.model.tranferdetail.TransactionDetail;
 import com.example.myapplication.wolit.model.tranferdetail.WeeklyDetail;
 
-import org.threeten.bp.Month;
-
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -64,6 +59,9 @@ public class RealmApdapter {
             list.add(tmp);
         }
         return list;
+    }
+    public static RealmResults<NonRepeatedDetail> getAllNonRepeatedList(){
+        return RealmApdapter.getInstance().where(NonRepeatedDetail.class).sort("date.dateCode").findAll();
     }
     public static void removeFromCombiningList(int pos){
         if (realmWeekly.size() + realmMonthly.size() <= pos){

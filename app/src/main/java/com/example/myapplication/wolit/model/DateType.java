@@ -1,6 +1,7 @@
 package com.example.myapplication.wolit.model;
 
 import android.util.Log;
+import android.util.TimeUtils;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -19,14 +20,14 @@ public class DateType extends RealmObject {
     private static DateType recentDate = null;
     public static DateType getRecentDate(){
         if (recentDate == null){
-            recentDate = new DateType();
+            recentDate = getToday();
         }
         return recentDate;
     }
     public static DateType getToday(){
-        return new DateType(16, 7, 2020);
-//        Calendar calendar = Calendar.getInstance();
-//        return new DateType(calendar.get(Calendar.DAY_OF_MONTH), calendar.get(Calendar.MONTH)+1, calendar.get(Calendar.YEAR));
+//        return new DateType(16, 7, 2020);
+        Calendar calendar = Calendar.getInstance();
+        return new DateType(calendar.get(Calendar.DAY_OF_MONTH), calendar.get(Calendar.MONTH)+1, calendar.get(Calendar.YEAR));
     }
     public DateType(int date, int month, int year){
         this.date = date;
@@ -127,6 +128,16 @@ public class DateType extends RealmObject {
             Date date1 = dft.parse(this.date+" "+this.month+" "+this.year);
             Date date2 = dft.parse(toDate.date+" "+toDate.month+" "+this.year);
             return (int) TimeUnit.DAYS.convert((date2.getTime() - date1.getTime()), TimeUnit.MILLISECONDS);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        return 0;
+    }
+    public long getMilisecondCode(){
+        SimpleDateFormat dft = new SimpleDateFormat("dd MM yyyy");
+        try {
+            Date date1 = dft.parse(this.date+" "+this.month+" "+this.year);
+            return TimeUnit.MILLISECONDS.convert(date1.getTime(), TimeUnit.MILLISECONDS);
         } catch (ParseException e) {
             e.printStackTrace();
         }

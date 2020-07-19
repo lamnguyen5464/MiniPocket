@@ -2,7 +2,6 @@ package com.example.myapplication.wolit.viewmodels;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,15 +14,12 @@ import com.example.myapplication.wolit.R;
 import com.example.myapplication.wolit.model.DateType;
 import com.example.myapplication.wolit.model.tranferdetail.EveryNDayDetail;
 import com.example.myapplication.wolit.model.tranferdetail.MonthlyDetail;
-import com.example.myapplication.wolit.model.tranferdetail.NonRepeatedDetail;
 import com.example.myapplication.wolit.model.tranferdetail.TransactionDetail;
 import com.example.myapplication.wolit.model.tranferdetail.WeeklyDetail;
-import com.example.myapplication.wolit.realm.RealmApdapter;
+import com.example.myapplication.wolit.database.RealmApdapter;
 
 import java.text.DecimalFormat;
 import java.util.List;
-
-import io.realm.RealmResults;
 
 public class AdapterListViewPending extends BaseAdapter {
     Context context;
