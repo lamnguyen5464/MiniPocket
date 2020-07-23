@@ -127,7 +127,7 @@ public class NewTransferViewModel extends BaseObservable {
                 notifyChange();
                 Toast.makeText(context, "Hold button to remove this date", Toast.LENGTH_SHORT).show();
             }
-        }, recentDate.getYear(), recentDate.getMonth(), recentDate.getDate());
+        }, recentDate.getYear(), recentDate.getMonth()-1, recentDate.getDate());
         datePickerDialog.show();
     }
     public void onClickAddingButton(){

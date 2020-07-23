@@ -3,6 +3,11 @@ package com.example.myapplication.wolit.activities;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.Notification;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
+import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
@@ -29,7 +34,7 @@ public class MainActivity extends AppCompatActivity {
                     fragmentFunc.loadFragment(new FragmentTransfer(), getSupportFragmentManager(), R.id.frameLayout);
                     return true;
                 case R.id.frag2:
-                    fragmentFunc.loadFragment(FragmentCurrentStatus.getInstance(), getSupportFragmentManager(),  R.id.frameLayout);
+                    fragmentFunc.loadFragment(FragmentCurrentStatus.getInstance(false), getSupportFragmentManager(),  R.id.frameLayout);
                     return true;
                 case R.id.frag3:
                     fragmentFunc.loadFragment(new FragmentCloudData(), getSupportFragmentManager(), R.id.frameLayout);
@@ -47,20 +52,13 @@ public class MainActivity extends AppCompatActivity {
 
         bottomNavigationView.setOnNavigationItemSelectedListener(navigationItemSelectedListener);
         bottomNavigationView.setSelectedItemId(R.id.frag2);
-        fragmentFunc.loadFragment(FragmentCurrentStatus.getInstance(), getSupportFragmentManager(),  R.id.frameLayout);
+        fragmentFunc.loadFragment(FragmentCurrentStatus.getInstance(true), getSupportFragmentManager(),  R.id.frameLayout);
 
 
-//        *
-        RealmApdapter.initIntance(this);
-        AndroidThreeTen.init(this);
-        CurrentStatus.initSharedValue(this);
 
 
-        CurrentStatus.update();
 
-        Log.d("@@@",CurrentStatus.getSharedValue().getUpToDate().getDate() + " " +CurrentStatus.getSharedValue().getUpToDate().getMonth());
-
-
+//        Log.d("@@@",CurrentStatus.getSharedValue().getUpToDate().getDate() + " " +CurrentStatus.getSharedValue().getUpToDate().getMonth());
 
 //        DateType fromDate = new DateType(1, 7, 2020);
 //        DateType toDate = new DateType(31, 7, 2020);

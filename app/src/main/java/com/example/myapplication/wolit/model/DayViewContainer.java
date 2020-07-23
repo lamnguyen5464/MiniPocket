@@ -10,12 +10,13 @@ import com.kizitonwose.calendarview.ui.ViewContainer;
 
 public class DayViewContainer extends ViewContainer {
     public Button btDayCell;
-    public View markText, selectedBackground;
+    public View markEarning, markPaying, selectedBackground;
     public TextView dayOfWeek, labelDate;
 
     public DayViewContainer(@NonNull View view) {
         super(view);
-        markText = view.findViewById(R.id.markText);
+        markEarning = view.findViewById(R.id.markEarning);
+        markPaying = view.findViewById(R.id.markPaying);
         selectedBackground = view.findViewById(R.id.selected);
         dayOfWeek = view.findViewById(R.id.dayOfWeek);
         labelDate = view.findViewById(R.id.labelDate);

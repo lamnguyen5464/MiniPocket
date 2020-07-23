@@ -30,18 +30,13 @@ public class AdapterListViewTransfer extends BaseAdapter {
     Context context;
     LayoutInflater layoutInflater;
     RealmResults<NonRepeatedDetail> arrayTransactions;
-    int firstIndex, lastIndex;
+    private int firstIndex, lastIndex;
     public AdapterListViewTransfer(Context context, RealmResults<NonRepeatedDetail> arrayTransactions){
         this.context = context;
         this.arrayTransactions = arrayTransactions;
         this.layoutInflater = LayoutInflater.from(context);
         firstIndex = -1;
         lastIndex = -1;
-
-        int i = 0;
-        for(NonRepeatedDetail tmp : arrayTransactions){
-            Log.d("@@@", i++ + ") " +tmp.getValue()+" " +tmp.getNote()+" " +tmp.getDate().getString());
-        }
 
     }
     public int lowerBound(DateType date){
@@ -74,8 +69,12 @@ public class AdapterListViewTransfer extends BaseAdapter {
 
         this.firstIndex = lowerBound(date);
         this.lastIndex = upperBound(date);
+
         notifyDataSetChanged();
 //        Log.d("@@@", this.firstIndex + " " + this.lastIndex);
+    }
+    public NonRepeatedDetail get(int pos){
+        return arrayTransactions.get(pos);
     }
     @Override
     public int getCount() {
@@ -113,6 +112,7 @@ public class AdapterListViewTransfer extends BaseAdapter {
             viewHolder = (ViewHolder)convertView.getTag();
         }
         DecimalFormat decimalFormat = new DecimalFormat("###,###,###");
+        Log.d("@@@", arrayTransactions.get(lastIndex - position).getValue()+" "+arrayTransactions.get(lastIndex - position).getNote());
         double value = arrayTransactions.get(lastIndex - position).getValue();
         if (value < 0){
             viewHolder.labelValue.setTextColor(ContextCompat.getColor(context, R.color.RED));
@@ -135,6 +135,9 @@ public class AdapterListViewTransfer extends BaseAdapter {
         TextView labelNote;
         TextView labelMonthYear;
         TextView labelDate;
+    }
+    public int getRealPosition(int pos){
+        return lastIndex - pos;
     }
     public void removePos(int pos){
         arrayTransactions.get(lastIndex - pos).removeFromDatabase();

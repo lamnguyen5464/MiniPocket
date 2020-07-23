@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/GRAY">
+
+    <TextView
+        android:id="@+id/t2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/im1"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="10dp"
+        android:text="MiniPocket"
+        android:fontFamily="@font/chalkboard"
+        android:textColor="@color/WHITE"
+        android:textSize="45sp"  />
+    <ImageView
+        android:id="@+id/im1"
+        android:layout_width="200dp"
+        android:layout_height="200dp"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="130dp"
+        android:src="@drawable/icon_none" />
+    <TextView
+        android:id="@+id/nametag"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:text=" @lamnguyen5464"
+        android:textColor="@color/WHITE"
+        android:textSize="12sp"
+        android:textStyle="italic"
+        android:fontFamily="@font/math_tapping"
+        android:layout_alignParentBottom="true"/>
+
+
+</RelativeLayout>

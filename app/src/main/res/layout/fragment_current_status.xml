@@ -24,8 +24,8 @@
                 android:layout_centerVertical="true"
                 android:layout_marginLeft="20dp"
                 android:fontFamily="@font/math_tapping"
-                android:text="Your status"
-                android:textColor="@color/WHITE"
+                android:text="Your pocket"
+                android:textColor="@color/YELLOW"
                 android:textSize="25sp" />
         </RelativeLayout>
 
@@ -37,35 +37,127 @@
             app:refreshType="smartisan"
             app:refreshColor="@color/YELLOW"
             >
-            <RelativeLayout
+            <ScrollView
+                android:id="@id/scrollView"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
-                <TextView
-                    android:id="@+id/yourMoney"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="50dp"
-                    android:layout_marginTop="30dp"
-                    android:fontFamily="@font/chalkboard"
-                    android:text="TextView"
-                    android:textColor="@color/YELLOW"
-                    android:textSize="30dp" />
-
-                <com.github.mikephil.charting.charts.LineChart
-                    android:id="@+id/chart"
-                    android:layout_marginTop="30dp"
+                android:layout_height="match_parent"
+                >
+                <RelativeLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:layout_below="@id/yourMoney"
-                    android:layout_marginBottom="10dp"
-                    android:background="@drawable/custom_background_listcell"/>
-            </RelativeLayout>
+                    android:padding="10dp">
+                    <TextView
+                        android:id="@+id/yourMoney"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/chalkboard"
+                        android:layout_marginLeft="30dp"
+                        android:layout_marginTop="30dp"
+                        android:text="TextView"
+                        android:textColor="@color/YELLOW"
+                        android:textSize="30dp" />
+
+                    <CheckBox
+                        android:id="@+id/checkBoxFilter"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="20dp"
+                        android:layout_marginTop="30dp"
+                        android:textSize="17dp"
+                        android:textColor="@color/WHITE_DARK"
+                        android:layout_below="@id/yourMoney"
+                        android:fontFamily="@font/chalkboard"
+                        android:checked="false"
+                        android:text="Filter"
+                        android:buttonTint="@color/WHITE_DARK"
+                        />
+                    <RelativeLayout
+                        android:id="@+id/filter"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_below="@+id/checkBoxFilter"
+                        android:layout_marginTop="10dp"
+                        android:visibility="gone"
+                        android:paddingBottom="10dp"
+                        >
+                        <Button
+                            android:id="@+id/startDate"
+                            android:layout_width="120dp"
+                            android:layout_height="50dp"
+                            android:layout_toLeftOf="@+id/arrow"
+                            android:layout_alignTop="@+id/arrow"
+                            android:textSize="15sp"
+                            android:textColor="@color/WHITE"
+                            android:fontFamily="@font/chalkboard"
+                            android:text="__/__/____"
+                            android:background="@drawable/custom_background_white"
+                            android:padding="10dp"
+                            android:layout_marginRight="10dp"
+                            android:foreground="?attr/selectableItemBackground"
+                            />
+                        <ImageView
+                            android:id="@+id/arrow"
+                            android:layout_width="wrap_content"
+                            android:layout_height="50dp"
+                            android:layout_centerHorizontal="true"
+                            android:background="@android:color/transparent"
+                            android:src="@drawable/icon_arrow_white" />
+                        <Button
+                            android:id="@+id/endDate"
+                            android:layout_width="120dp"
+                            android:layout_height="50dp"
+                            android:layout_toRightOf="@+id/arrow"
+                            android:layout_alignTop="@+id/arrow"
+                            android:textSize="15sp"
+                            android:textColor="@color/WHITE"
+                            android:fontFamily="@font/chalkboard"
+                            android:text="__/__/____"
+                            android:background="@drawable/custom_background_white"
+                            android:padding="10dp"
+                            android:layout_marginLeft="10dp"
+                            android:foreground="?attr/selectableItemBackground"
+                            />
+                        <EditText
+                            android:id="@+id/filterNote"
+                            android:layout_width="match_parent"
+                            android:layout_height="50dp"
+                            android:hint="Filter note"
+                            android:padding="10dp"
+                            android:textSize="18dp"
+                            android:layout_below="@id/arrow"
+                            android:textColor="@color/WHITE"
+                            android:layout_alignStart="@+id/startDate"
+                            android:layout_toLeftOf="@+id/btRefresh"
+                            android:layout_marginRight="5dp"
+                            android:textColorHint="@color/WHITE_DARK"
+                            android:background="@drawable/custom_background_white"
+                            android:fontFamily="@font/chalkboard"
+                            android:maxLength="50"
+                            />
+                        <ImageButton
+                            android:id="@+id/btRefresh"
+                            android:layout_width="50dp"
+                            android:layout_height="50dp"
+                            android:src="@drawable/icon_refresh"
+                            android:layout_alignEnd="@+id/endDate"
+                            android:layout_alignTop="@id/filterNote"
+                            android:foreground="?attr/selectableItemBackground"
+                            android:background="@android:color/transparent"
+                            />
+                    </RelativeLayout>
+
+                    <com.github.mikephil.charting.charts.LineChart
+                        android:id="@+id/chart"
+                        android:layout_marginTop="0dp"
+                        android:layout_width="match_parent"
+                        android:layout_height="400dp"
+                        android:layout_below="@id/filter"
+                        android:layout_marginBottom="10dp"
+                        android:background="@drawable/custom_background_white"/>
+                </RelativeLayout>
+            </ScrollView>
 
         </com.baoyz.widget.PullRefreshLayout>
-
-
-
-
     </RelativeLayout>
 
 

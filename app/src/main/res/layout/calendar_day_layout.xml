@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
     android:padding="5dp"
     xmlns:tools="http://schemas.android.com/tools">
     <View
@@ -36,7 +36,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@id/labelDate"
-        android:layout_marginTop="5dp"
+        android:layout_marginTop="3dp"
         android:textSize="12dp"
         android:textColor="@color/WHITE"
         android:layout_centerHorizontal="true"
@@ -45,14 +45,21 @@
         android:foreground="?attr/selectableItemBackground"
         android:text="14/7"
         />
-
     <View
-        android:id="@+id/markText"
-        android:layout_width="10dp"
+        android:id="@+id/markEarning"
+        android:layout_width="5dp"
         android:layout_height="5dp"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="2dp"
         android:layout_below="@+id/dayOfWeek"
         android:background="@drawable/custom_background_earning"
+        />
+
+    <View
+        android:id="@+id/markPaying"
+        android:layout_width="5dp"
+        android:layout_height="5dp"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@+id/markEarning"
+        android:background="@drawable/custom_background_paying"
         />
 </RelativeLayout>

@@ -22,7 +22,10 @@ public class NewTransferActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
 
         ActivityNewTransferBinding binding = DataBindingUtil.setContentView(this, R.layout.activity_new_transfer);
+        binding.setNewTransfer(new NewTransferViewModel(this, getSupportFragmentManager()));
+
         switchSelect = findViewById(R.id.switch_select);
+        switchSelect.setTypeface(ResourcesCompat.getFont(this, R.font.chalkboard));
         btBack = findViewById(R.id.button_back);
         btBack.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -30,8 +33,6 @@ public class NewTransferActivity extends AppCompatActivity {
                 finish();
             }
         });
-        switchSelect.setTypeface(ResourcesCompat.getFont(this, R.font.chalkboard));
-        binding.setNewTransfer(new NewTransferViewModel(this, getSupportFragmentManager()));
 
         (findViewById(R.id.btGetDateOnce)).setOnLongClickListener(new View.OnLongClickListener() {
             @Override
