@@ -19,30 +19,36 @@ import com.example.myapplication.wolit.framents.FragmentFunc;
 import com.example.myapplication.wolit.framents.main.FragmentTransfer;
 import com.example.myapplication.wolit.model.CurrentStatus;
 import com.example.myapplication.wolit.database.RealmApdapter;
+import com.example.myapplication.wolit.model.tranferdetail.NonRepeatedDetail;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.jakewharton.threetenabp.AndroidThreeTen;
 
+import io.realm.RealmResults;
+
 public class MainActivity extends AppCompatActivity {
     BottomNavigationView bottomNavigationView;
-    FragmentFunc fragmentFunc = new FragmentFunc();
     BottomNavigationView.OnNavigationItemSelectedListener navigationItemSelectedListener
             = new BottomNavigationView.OnNavigationItemSelectedListener(){
         @Override
         public boolean onNavigationItemSelected(@NonNull MenuItem item) {
             switch (item.getItemId()){
                 case R.id.frag1:
-                    fragmentFunc.loadFragment(new FragmentTransfer(), getSupportFragmentManager(), R.id.frameLayout);
+                    FragmentFunc.loadFragment(new FragmentTransfer(), getSupportFragmentManager(), R.id.frameLayout);
                     return true;
                 case R.id.frag2:
-                    fragmentFunc.loadFragment(FragmentCurrentStatus.getInstance(false), getSupportFragmentManager(),  R.id.frameLayout);
+                    FragmentFunc.loadFragment(FragmentCurrentStatus.getInstance(false, getSupportFragmentManager()), getSupportFragmentManager(),  R.id.frameLayout);
                     return true;
                 case R.id.frag3:
-                    fragmentFunc.loadFragment(new FragmentCloudData(), getSupportFragmentManager(), R.id.frameLayout);
+                    FragmentFunc.loadFragment(new FragmentCloudData(), getSupportFragmentManager(), R.id.frameLayout);
                     return true;
             }
             return false;
         }
     };
+    @Override
+    public void onBackPressed() {
+        //avoid backPress
+    }
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -52,7 +58,7 @@ public class MainActivity extends AppCompatActivity {
 
         bottomNavigationView.setOnNavigationItemSelectedListener(navigationItemSelectedListener);
         bottomNavigationView.setSelectedItemId(R.id.frag2);
-        fragmentFunc.loadFragment(FragmentCurrentStatus.getInstance(true), getSupportFragmentManager(),  R.id.frameLayout);
+        FragmentFunc.loadFragment(FragmentCurrentStatus.getInstance(true, getSupportFragmentManager()), getSupportFragmentManager(),  R.id.frameLayout);
 
 
 

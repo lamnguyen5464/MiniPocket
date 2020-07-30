@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/custom_background_white"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:paddingBottom="10dp"
+    >
+
+    <View
+        android:layout_width="50dp"
+        android:layout_height="7dp"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="5dp"
+        android:background="@drawable/custom_background_listcell"
+        />
+
+    <com.baoyz.swipemenulistview.SwipeMenuListView
+        android:id="@+id/listPocket"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="15dp"
+        android:layout_marginBottom="10dp"
+        />
+
+    <Button
+        android:id="@+id/btAdd"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/listPocket"
+        android:background="@drawable/custom_background_white"
+        android:padding="20dp"
+        android:layout_marginLeft="15dp"
+        android:layout_marginRight="15dp"
+        android:foreground="?attr/selectableItemBackgroundBorderless"
+        android:textSize="17dp"
+        android:fontFamily="@font/chalkboard"
+        android:drawableLeft="@drawable/icon_add_yellow"
+        android:textAlignment="viewStart"
+        android:textColor="@color/YELLOW"
+        android:text=" Add"
+        />
+
+
+
+</RelativeLayout>

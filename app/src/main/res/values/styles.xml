@@ -29,4 +29,12 @@
     <style name="RedCheck">
         <item name="colorAccent">@color/RED</item>
     </style>
+    
+    <style name="BottomSheetSyle" parent="Widget.Design.BottomSheet.Modal">
+        <item name="android:background">@android:color/transparent</item>
+    </style>
+    
+    <style name="BottomSheetDialogTheme" parent="Theme.Design.BottomSheetDialog">
+        <item name="bottomSheetStyle">@style/BottomSheetSyle</item>
+    </style>
 </resources>

@@ -2,6 +2,7 @@ package com.example.myapplication.wolit.database;
 
 import android.content.Context;
 
+import com.example.myapplication.wolit.model.PocketVers;
 import com.example.myapplication.wolit.model.tranferdetail.EveryNDayDetail;
 import com.example.myapplication.wolit.model.tranferdetail.MonthlyDetail;
 import com.example.myapplication.wolit.model.tranferdetail.NonRepeatedDetail;
@@ -17,25 +18,42 @@ import io.realm.RealmResults;
 
 public class RealmApdapter {
     private static Realm instance = null;
-    private static RealmApdapter sharedValue = null;
+    private static Realm instancePocket = null;
     static RealmResults<WeeklyDetail> realmWeekly;
     static RealmResults<MonthlyDetail> realmMonthly;
     static RealmResults<EveryNDayDetail> realmEveryNDay;
+    static final String DATABASE_TAG = "my_pockets";
     public static void initIntance(Context context) {
         Realm.init(context);
-        RealmConfiguration myConfig = new RealmConfiguration.Builder()
-                .name("myrealm3.realm")
+
+        RealmConfiguration myConfigPockets = new RealmConfiguration.Builder()
+                .name(DATABASE_TAG + ".realm")
                 .schemaVersion(1)
                 .build();
-        instance = Realm.getInstance(myConfig);
+
+        instancePocket = Realm.getInstance(myConfigPockets);
+
+        if (getPockets().size() == 0){
+            PocketVers.addNewPocket("Main pocket");
+        }
+        switchToVers("Main pocket");
     }
     public static Realm getInstance(){
         return instance;
+    }public static Realm getInstancePocket(){
+        return instancePocket;
     }
-    public static RealmApdapter getSharedValue() {
-        return sharedValue;
+    public static RealmResults<PocketVers> getPockets(){
+        return getInstancePocket().where(PocketVers.class).findAll();
     }
-
+    public static void switchToVers(String label){
+        RealmConfiguration myConfig = new RealmConfiguration.Builder()
+                .name(DATABASE_TAG + label +".realm")
+                .schemaVersion(1)
+                .build();
+        instance = Realm.getInstance(myConfig);
+        PocketVers.getCurrentVers().setLabel(label);
+    }
     public static void updateRealmResult(){
         realmWeekly = RealmApdapter.getInstance().where(WeeklyDetail.class).findAll();
         realmMonthly = RealmApdapter.getInstance().where(MonthlyDetail.class).findAll();

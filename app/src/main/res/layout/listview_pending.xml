@@ -13,7 +13,7 @@
         android:id="@+id/background"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@drawable/custom_background_white"
+        android:background="@drawable/custom_background_listcell"
         android:padding="20dp"
         android:foreground="?attr/selectableItemBackground"
         >

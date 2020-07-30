@@ -95,12 +95,4 @@ public class EditTransferViewModel extends BaseObservable {
     public NonRepeatedDetail getRootDetail() {
         return rootDetail;
     }
-
-    public void setRootDetail(NonRepeatedDetail rootDetail) {
-        this.rootDetail = rootDetail;
-    }
-
-    public void setEarning(boolean earning) {
-        isEarning = earning;
-    }
 }

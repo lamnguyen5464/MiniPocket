@@ -29,12 +29,10 @@ public class NewTransferViewModel extends BaseObservable {
     Context context;
     private NewTranferModel newTranferModel;
     private FragmentManager fragmentManager;
-    private FragmentFunc fragmentFunc;
     public String tmpValue = "";
 
     public NewTransferViewModel(Context context, FragmentManager fragmentManager){
         newTranferModel = new NewTranferModel();
-        fragmentFunc = new FragmentFunc();
         this.context = context;
         this.fragmentManager = fragmentManager;
         //get end set date
@@ -56,7 +54,7 @@ public class NewTransferViewModel extends BaseObservable {
             switchToggleGroup(false, false, false);
         }else{
             switchToggleGroup(true, false, false);
-            fragmentFunc.loadFragment(new FragmentWeekly(context, this.newTranferModel.isEarning), fragmentManager, R.id.frameDatePicker);
+            FragmentFunc.loadFragment(new FragmentWeekly(context, this.newTranferModel.isEarning), fragmentManager, R.id.frameDatePicker);
         }
         notifyChange();
     }
@@ -90,13 +88,13 @@ public class NewTransferViewModel extends BaseObservable {
         else this.newTranferModel.isMonthly = false;
         if (isEveryNDays) this.newTranferModel.isEveryNDays = true;
         else this.newTranferModel.isEveryNDays = false;
-        fragmentFunc.remove(fragmentManager, R.id.frameDatePicker);
+        FragmentFunc.remove(fragmentManager, R.id.frameDatePicker);
     }
     public void onSelectWeekly(){
         if (!this.newTranferModel.isWeekly) {
             this.newTranferModel.isWeekly = true;
             switchToggleGroup(true, false, false);
-            fragmentFunc.loadFragment(new FragmentWeekly(context, this.newTranferModel.isEarning), fragmentManager, R.id.frameDatePicker);
+            FragmentFunc.loadFragment(new FragmentWeekly(context, this.newTranferModel.isEarning), fragmentManager, R.id.frameDatePicker);
         }
         notifyChange();
     }
@@ -104,7 +102,7 @@ public class NewTransferViewModel extends BaseObservable {
         if (!this.newTranferModel.isMonthly) {
             this.newTranferModel.isMonthly = true;
             switchToggleGroup(false, true, false);
-            fragmentFunc.loadFragment(new FragmentMonthly(context, this.newTranferModel.isEarning), fragmentManager, R.id.frameDatePicker);
+            FragmentFunc.loadFragment(new FragmentMonthly(context, this.newTranferModel.isEarning), fragmentManager, R.id.frameDatePicker);
         }
         notifyChange();
     }
@@ -112,7 +110,7 @@ public class NewTransferViewModel extends BaseObservable {
         if (!this.newTranferModel.isEveryNDays) {
             this.newTranferModel.isEveryNDays = true;
             switchToggleGroup(false, false, true);
-            fragmentFunc.loadFragment(new FragmentEveryNDay(context, this.newTranferModel.isEarning), fragmentManager, R.id.frameDatePicker);
+            FragmentFunc.loadFragment(new FragmentEveryNDay(context, this.newTranferModel.isEarning), fragmentManager, R.id.frameDatePicker);
         }
         notifyChange();
     }

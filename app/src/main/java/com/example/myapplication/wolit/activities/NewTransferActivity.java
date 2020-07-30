@@ -43,6 +43,11 @@ public class NewTransferActivity extends AppCompatActivity {
             }
         });
     }
+
+    @Override
+    public void onBackPressed() {
+        //avoid backPress
+    }
     @BindingAdapter({"cursorPosition"})
     public static void setCursorPosition(EditText editText, String value){
         editText.setSelection(value.length());

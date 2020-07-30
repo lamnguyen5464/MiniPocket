@@ -2,15 +2,18 @@ package com.example.myapplication.wolit.framents.main;
 
 import android.app.DatePickerDialog;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
@@ -22,13 +25,21 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.baoyz.swipemenulistview.SwipeMenu;
+import com.baoyz.swipemenulistview.SwipeMenuCreator;
+import com.baoyz.swipemenulistview.SwipeMenuItem;
+import com.baoyz.swipemenulistview.SwipeMenuListView;
 import com.baoyz.widget.PullRefreshLayout;
 import com.example.myapplication.wolit.R;
+import com.example.myapplication.wolit.activities.NewTransferActivity;
 import com.example.myapplication.wolit.database.RealmApdapter;
+import com.example.myapplication.wolit.framents.FragmentFunc;
 import com.example.myapplication.wolit.model.CurrentStatus;
 import com.example.myapplication.wolit.model.DateType;
+import com.example.myapplication.wolit.model.PocketVers;
 import com.example.myapplication.wolit.model.tranferdetail.NonRepeatedDetail;
 import com.example.myapplication.wolit.model.tranferdetail.WeeklyDetail;
+import com.example.myapplication.wolit.viewmodels.AdapterListViewPocket;
 import com.github.mikephil.charting.animation.Easing;
 import com.github.mikephil.charting.charts.LineChart;
 import com.github.mikephil.charting.components.AxisBase;
@@ -36,6 +47,7 @@ import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
 import com.github.mikephil.charting.formatter.ValueFormatter;
+import com.google.android.material.bottomsheet.BottomSheetDialog;
 
 import java.text.DateFormat;
 import java.text.DecimalFormat;
@@ -58,9 +70,11 @@ public class FragmentCurrentStatus extends Fragment implements CompoundButton.On
     EditText filterNote;
     Button btStartDate;
     Button btEndDate;
-    public static FragmentCurrentStatus getInstance(boolean newFrame){
+    FragmentManager fragmentManager;
+    public static FragmentCurrentStatus getInstance(boolean newFrame, FragmentManager fragmentManager){
         if (instance == null || newFrame){
             instance = new FragmentCurrentStatus();
+            instance.fragmentManager = fragmentManager;
         }
         return instance;
     }
@@ -85,6 +99,7 @@ public class FragmentCurrentStatus extends Fragment implements CompoundButton.On
         checkBoxFilter = view.findViewById(R.id.checkBoxFilter);
         layoutFilter = view.findViewById(R.id.filter);
         filterNote = view.findViewById(R.id.filterNote);
+        ((Button)view.findViewById(R.id.btPocketSelect)).setText(PocketVers.getCurrentVers().getLabel());
 
 
         checkBoxFilter.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
@@ -104,10 +119,8 @@ public class FragmentCurrentStatus extends Fragment implements CompoundButton.On
                     refreshDataForChart();
                 }
             }
-        });
-
+        }); 
         //filterText
-
 
         //chart
         lineChart = view.findViewById(R.id.chart);
@@ -153,6 +166,14 @@ public class FragmentCurrentStatus extends Fragment implements CompoundButton.On
         btStartDate.setText(startDate.getString());
 
         view.findViewById(R.id.btRefresh).setOnClickListener(this);
+        view.findViewById(R.id.btPocketSelect).setOnClickListener(this);
+
+        view.findViewById(R.id.floatBtAddNew).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(getActivity(), NewTransferActivity.class));
+            }
+        });
 
         return view;
     }
@@ -224,6 +245,59 @@ public class FragmentCurrentStatus extends Fragment implements CompoundButton.On
         else endDate.reset();
         refreshDataForChart();
     }
+    private void showBottomDialogPocketSelect(){
+        final BottomSheetDialog bottomSheetPocketSelector = new BottomSheetDialog(getContext(), R.style.BottomSheetDialogTheme);
+        bottomSheetPocketSelector.setContentView(R.layout.dialog_pocket_picker);
+
+        final SwipeMenuListView listPocket = bottomSheetPocketSelector.findViewById(R.id.listPocket);
+        final AdapterListViewPocket adapterListViewPocket = new AdapterListViewPocket(getContext(), RealmApdapter.getPockets());
+        listPocket.setAdapter(adapterListViewPocket);
+
+        SwipeMenuCreator creator = new SwipeMenuCreator() {
+            @Override
+            public void create(SwipeMenu menu) {
+
+                SwipeMenuItem deleteItem = new SwipeMenuItem(getActivity());
+                // set item width
+                deleteItem.setWidth((150));
+                deleteItem.setBackground(getResources().getDrawable(R.drawable.custom_background_paying));
+                // set a icon
+                deleteItem.setIcon(R.drawable.icon_delete);
+                // add to menu
+                menu.addMenuItem(deleteItem);
+            }
+        };
+        listPocket.setMenuCreator(creator);
+        listPocket.setSwipeDirection(SwipeMenuListView.DIRECTION_LEFT);
+
+        listPocket.setOnMenuItemClickListener(new SwipeMenuListView.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(int position, SwipeMenu menu, int index) {
+                return false;
+            }
+        });
+        listPocket.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                adapterListViewPocket.onSelected(position);
+                adapterListViewPocket.notifyDataSetChanged();
+                bottomSheetPocketSelector.cancel();
+                FragmentFunc.loadFragment(FragmentCurrentStatus.getInstance(true, fragmentManager), fragmentManager,  R.id.frameLayout);
+            }
+        });
+
+        bottomSheetPocketSelector.findViewById(R.id.btAdd).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+//                PocketVers.addNewPocket("ver 2");
+                Log.d("@@@",  "clicked" );
+                bottomSheetPocketSelector.cancel();
+            }
+        });
+
+
+        bottomSheetPocketSelector.show();
+    }
     @Override
     public void onClick(View v) {
         switch (v.getId()){
@@ -235,6 +309,9 @@ public class FragmentCurrentStatus extends Fragment implements CompoundButton.On
                 break;
             case R.id.btRefresh:
                 refreshDataForChart();
+                break;
+            case R.id.btPocketSelect:
+                showBottomDialogPocketSelect();
                 break;
         }
     }
