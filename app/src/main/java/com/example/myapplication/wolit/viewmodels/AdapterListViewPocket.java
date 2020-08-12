@@ -9,14 +9,9 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import androidx.appcompat.content.res.AppCompatResources;
-
 import com.example.myapplication.wolit.R;
 import com.example.myapplication.wolit.database.RealmApdapter;
 import com.example.myapplication.wolit.model.PocketVers;
-import com.example.myapplication.wolit.model.tranferdetail.TransactionDetail;
-
-import java.util.List;
 
 import io.realm.RealmResults;
 
@@ -44,7 +39,7 @@ public class AdapterListViewPocket extends BaseAdapter {
         return 0;
     }
     public void onSelected(int position){
-        RealmApdapter.switchToVers(listPocket.get(position).getLabel());
+        RealmApdapter.switchInstanceToVers(listPocket.get(position).getLabel());
     }
     @SuppressLint("ResourceAsColor")
     @Override

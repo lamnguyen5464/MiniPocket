@@ -2,11 +2,13 @@ package com.example.myapplication.wolit.model;
 
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.os.Build;
 
+import com.example.myapplication.wolit.database.RealmApdapter;
 import com.example.myapplication.wolit.model.tranferdetail.EveryNDayDetail;
 import com.example.myapplication.wolit.model.tranferdetail.MonthlyDetail;
 import com.example.myapplication.wolit.model.tranferdetail.WeeklyDetail;
+
+import io.realm.RealmResults;
 
 import static android.content.Context.MODE_PRIVATE;
 
@@ -80,7 +82,13 @@ public class CurrentStatus {
     }
     public static void update(){
         DateType toDay = DateType.getToday();
-        updateTransaction(CurrentStatus.getSharedValue().getUpToDate(), toDay);
+        RealmResults<PocketVers> listPockets = RealmApdapter.getPockets();
+        for(PocketVers pocket : listPockets){
+            RealmApdapter.switchInstanceToVers(pocket.getLabel());
+            updateTransaction(CurrentStatus.getSharedValue().getUpToDate(), toDay);
+        }
+        //
+        RealmApdapter.switchInstanceToVers(RealmApdapter.MAIN_POCKET);
         toDay.goToTheNextDay();
         CurrentStatus.getSharedValue().updateUpToDate(toDay);
     }

@@ -25,7 +25,7 @@ public class DateType extends RealmObject {
         return recentDate;
     }
     public static DateType getToday(){
-//        return new DateType(16, 7, 2020);
+//        return new DateType(9, 8, 2020);
         Calendar calendar = Calendar.getInstance();
         return new DateType(calendar.get(Calendar.DAY_OF_MONTH), calendar.get(Calendar.MONTH)+1, calendar.get(Calendar.YEAR));
     }

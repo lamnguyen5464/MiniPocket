@@ -139,7 +139,9 @@ public class NewTransferViewModel extends BaseObservable {
                 DateType fromDate = new DateType(finalDetail.getStartDate());
                 finalDetail.generateTransaction(fromDate, DateType.getToday());
             }
-            context.startActivity(new Intent(context, MainActivity.class));
+            Intent intent = new Intent(context, MainActivity.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            context.startActivity(intent);
         }
     }
 }

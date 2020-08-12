@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    android:layout_width="match_parent"
+    android:layout_height="200dp"
+    android:background="@color/BACKGROUND"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+
+    >
+    <Button
+        android:id="@+id/button_create"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:fontFamily="@font/chalkboard"
+        android:background="@drawable/custom_background_yellow"
+        android:foreground="?attr/selectableItemBackground"
+        android:layout_centerVertical="true"
+        android:textSize="12dp"
+        android:layout_alignParentRight="true"
+        android:layout_marginRight="10dp"
+        android:text="pick" />
+
+    <EditText
+        android:id="@+id/edit_text_new_pocket"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:padding="10dp"
+        android:textSize="15dp"
+        android:layout_toRightOf="@+id/labelHowMuch"
+        android:layout_centerVertical="true"
+        android:layout_alignTop="@+id/labelNote"
+        android:textColor="@color/WHITE"
+        android:layout_toLeftOf="@+id/button_create"
+        android:layout_marginRight="10dp"
+        android:layout_marginLeft="10dp"
+        android:textColorHint="@color/WHITE_DARK"
+        android:background="@drawable/custom_background_white"
+        android:inputType="textCapSentences"
+        android:fontFamily="@font/chalkboard"
+        android:maxLength="50"
+        android:hint="New pocket" />
+
+</RelativeLayout>

@@ -1,6 +1,7 @@
 package com.example.myapplication.wolit.model;
 
 import com.example.myapplication.wolit.database.RealmApdapter;
+import com.example.myapplication.wolit.model.tranferdetail.NonRepeatedDetail;
 
 import io.realm.Realm;
 import io.realm.RealmObject;
@@ -40,5 +41,12 @@ public class PocketVers extends RealmObject {
                 RealmApdapter.getInstancePocket().copyToRealm(tmp);
             }
         });
+        RealmApdapter.switchInstanceToVers(label);
+//        NonRepeatedDetail.createAndAddToRealm(0, "Initially create", DateType.getToday());
+    }
+    public void removeFromDataBase(){
+        RealmApdapter.getInstancePocket().beginTransaction();
+        this.deleteFromRealm();
+        RealmApdapter.getInstancePocket().commitTransaction();
     }
 }

@@ -1,7 +1,9 @@
 package com.example.myapplication.wolit.framents.main;
 
+import android.app.AlertDialog;
 import android.app.DatePickerDialog;
-import android.content.Context;
+import android.app.Dialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 
@@ -9,7 +11,6 @@ import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,8 +20,6 @@ import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.DatePicker;
 import android.widget.EditText;
-import android.widget.ImageButton;
-import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -34,11 +33,9 @@ import com.example.myapplication.wolit.R;
 import com.example.myapplication.wolit.activities.NewTransferActivity;
 import com.example.myapplication.wolit.database.RealmApdapter;
 import com.example.myapplication.wolit.framents.FragmentFunc;
-import com.example.myapplication.wolit.model.CurrentStatus;
 import com.example.myapplication.wolit.model.DateType;
 import com.example.myapplication.wolit.model.PocketVers;
 import com.example.myapplication.wolit.model.tranferdetail.NonRepeatedDetail;
-import com.example.myapplication.wolit.model.tranferdetail.WeeklyDetail;
 import com.example.myapplication.wolit.viewmodels.AdapterListViewPocket;
 import com.github.mikephil.charting.animation.Easing;
 import com.github.mikephil.charting.charts.LineChart;
@@ -168,13 +165,7 @@ public class FragmentCurrentStatus extends Fragment implements CompoundButton.On
         view.findViewById(R.id.btRefresh).setOnClickListener(this);
         view.findViewById(R.id.btPocketSelect).setOnClickListener(this);
 
-        view.findViewById(R.id.floatBtAddNew).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startActivity(new Intent(getActivity(), NewTransferActivity.class));
-            }
-        });
-
+        view.findViewById(R.id.floatBtAddNew).setOnClickListener(this);
         return view;
     }
     private void refreshDataForChart(){
@@ -249,13 +240,24 @@ public class FragmentCurrentStatus extends Fragment implements CompoundButton.On
         final BottomSheetDialog bottomSheetPocketSelector = new BottomSheetDialog(getContext(), R.style.BottomSheetDialogTheme);
         bottomSheetPocketSelector.setContentView(R.layout.dialog_pocket_picker);
 
-        final SwipeMenuListView listPocket = bottomSheetPocketSelector.findViewById(R.id.listPocket);
-        final AdapterListViewPocket adapterListViewPocket = new AdapterListViewPocket(getContext(), RealmApdapter.getPockets());
-        listPocket.setAdapter(adapterListViewPocket);
+        final SwipeMenuListView listViewPocket = bottomSheetPocketSelector.findViewById(R.id.listPocket);
+        final RealmResults<PocketVers> listPockets = RealmApdapter.getPockets();
+
+        final AdapterListViewPocket adapterListViewPocket = new AdapterListViewPocket(getContext(), listPockets);
+        listViewPocket.setAdapter(adapterListViewPocket);
 
         SwipeMenuCreator creator = new SwipeMenuCreator() {
             @Override
             public void create(SwipeMenu menu) {
+
+                SwipeMenuItem mergeItem = new SwipeMenuItem(getActivity());
+                // set item width
+                mergeItem.setWidth((150));
+                mergeItem.setBackground(getResources().getDrawable(R.drawable.custom_background_earning));
+                // set a icon
+                mergeItem.setIcon(R.drawable.icon_merge);
+                // add to menu
+                menu.addMenuItem(mergeItem);
 
                 SwipeMenuItem deleteItem = new SwipeMenuItem(getActivity());
                 // set item width
@@ -265,22 +267,83 @@ public class FragmentCurrentStatus extends Fragment implements CompoundButton.On
                 deleteItem.setIcon(R.drawable.icon_delete);
                 // add to menu
                 menu.addMenuItem(deleteItem);
+
             }
         };
-        listPocket.setMenuCreator(creator);
-        listPocket.setSwipeDirection(SwipeMenuListView.DIRECTION_LEFT);
+        listViewPocket.setMenuCreator(creator);
+        listViewPocket.setSwipeDirection(SwipeMenuListView.DIRECTION_LEFT);
 
-        listPocket.setOnMenuItemClickListener(new SwipeMenuListView.OnMenuItemClickListener() {
+        listViewPocket.setOnMenuItemClickListener(new SwipeMenuListView.OnMenuItemClickListener() {
             @Override
-            public boolean onMenuItemClick(int position, SwipeMenu menu, int index) {
+            public boolean onMenuItemClick(final int position, SwipeMenu menu, int index) {
+                switch (index){
+                    case 0:
+                        if (position == 0){
+                            Toast.makeText(getContext(), "Needn't do it!", Toast.LENGTH_SHORT).show();
+                        }else{
+                            AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+                            builder.setCancelable(true);
+                            builder.setTitle("Add all transactions to Main pocket");
+                            builder.setMessage("Are you sure?");
+                            builder.setPositiveButton("Confirm",
+                                    new DialogInterface.OnClickListener() {
+                                        @Override
+                                        public void onClick(DialogInterface dialog, int which) {
+                                            RealmApdapter.mergeAllToMain(listPockets.get(position));
+                                            FragmentFunc.loadFragment(FragmentCurrentStatus.getInstance(true, fragmentManager), fragmentManager,  R.id.frameLayout);
+                                            Toast.makeText(getContext(), "Added all transactions of " + listPockets.get(position).getLabel() + " to Main pocket", Toast.LENGTH_SHORT).show();
+                                        }
+                                    });
+                            builder.setNegativeButton("Cancel",
+                                    new DialogInterface.OnClickListener() {
+                                        @Override
+                                        public void onClick(DialogInterface dialog, int which) {
+                                            dialog.cancel();
+                                        }
+                                    });
+
+                            AlertDialog dialog = builder.create();
+                            dialog.show();
+                        }
+                        break;
+                    case 1:
+                        if (position == 0 || listPockets.get(position).getLabel().equals(PocketVers.getCurrentVers().getLabel())){
+                            Toast.makeText(getContext(), "Cannot remove this wallet!", Toast.LENGTH_SHORT).show();
+                        }else{
+                            AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+                            builder.setCancelable(true);
+                            builder.setTitle("Delete "+ listPockets.get(position).getLabel());
+                            builder.setMessage("Are you sure?");
+                            builder.setPositiveButton("Confirm",
+                                    new DialogInterface.OnClickListener() {
+                                        @Override
+                                        public void onClick(DialogInterface dialog, int which) {
+                                            RealmApdapter.eraseAll(RealmApdapter.getRealm(listPockets.get(position).getLabel()));
+                                            Toast.makeText(getContext(), "Delete " + listPockets.get(position).getLabel() + " successfully", Toast.LENGTH_SHORT).show();
+                                            listPockets.get(position).removeFromDataBase();
+                                        }
+                                    });
+                            builder.setNegativeButton("Cancel",
+                                    new DialogInterface.OnClickListener() {
+                                        @Override
+                                        public void onClick(DialogInterface dialog, int which) {
+                                            dialog.cancel();
+                                        }
+                                    });
+                            AlertDialog dialog = builder.create();
+                            dialog.show();
+                        }
+                        break;
+                }
+                bottomSheetPocketSelector.cancel();
                 return false;
             }
         });
-        listPocket.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        listViewPocket.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 adapterListViewPocket.onSelected(position);
-                adapterListViewPocket.notifyDataSetChanged();
+//                adapterListViewPocket.notifyDataSetChanged();
                 bottomSheetPocketSelector.cancel();
                 FragmentFunc.loadFragment(FragmentCurrentStatus.getInstance(true, fragmentManager), fragmentManager,  R.id.frameLayout);
             }
@@ -289,14 +352,43 @@ public class FragmentCurrentStatus extends Fragment implements CompoundButton.On
         bottomSheetPocketSelector.findViewById(R.id.btAdd).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-//                PocketVers.addNewPocket("ver 2");
-                Log.d("@@@",  "clicked" );
+                showDialogCreatePocket(listPockets);
                 bottomSheetPocketSelector.cancel();
             }
         });
 
 
         bottomSheetPocketSelector.show();
+    }
+    private void showDialogCreatePocket(final RealmResults<PocketVers> listPockets){
+        final Dialog dialogCreatePocket = new Dialog(getContext());
+        dialogCreatePocket.setContentView(R.layout.dialog_pocket_create);
+        dialogCreatePocket.setCanceledOnTouchOutside(true);
+        dialogCreatePocket.show();
+
+        dialogCreatePocket.findViewById(R.id.button_create).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String namePicker = ((EditText)dialogCreatePocket.findViewById(R.id.edit_text_new_pocket)).getText().toString();
+                if (!namePicker.equals("")){
+                    //check existing
+                    for(PocketVers curPocket : listPockets){
+                        if (namePicker.equals(curPocket.getLabel())){ // existing!!
+                            Toast.makeText(getContext(), "This name is already in used!", Toast.LENGTH_SHORT).show();
+                            dialogCreatePocket.cancel();
+                            return;
+                        }
+                    }
+                    //add
+                    PocketVers.addNewPocket(namePicker);
+                    Toast.makeText(getContext(), "Create \"" + namePicker + "\" successfully!", Toast.LENGTH_SHORT).show();
+                    FragmentFunc.loadFragment(FragmentCurrentStatus.getInstance(true, fragmentManager), fragmentManager,  R.id.frameLayout);
+                }else{
+                    Toast.makeText(getContext(), "Try again, name of pocket cannot be empty!!", Toast.LENGTH_SHORT).show();
+                }
+                dialogCreatePocket.cancel();
+            }
+        });
     }
     @Override
     public void onClick(View v) {
@@ -312,6 +404,9 @@ public class FragmentCurrentStatus extends Fragment implements CompoundButton.On
                 break;
             case R.id.btPocketSelect:
                 showBottomDialogPocketSelect();
+                break;
+            case R.id.floatBtAddNew:
+                startActivity(new Intent(getActivity(), NewTransferActivity.class));
                 break;
         }
     }

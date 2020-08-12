@@ -168,7 +168,7 @@ public class FragmentTransfer extends Fragment {
                 haveEarning = havePaying = false;
                 if (firstIndex != -1){
                     for(int index = firstIndex; index <= lastIndex; index++){
-                        if (customList.get(index).getValue() > 0)
+                        if (customList.get(index).getValue() >= 0)
                             haveEarning = true;
                         else
                             havePaying = true;

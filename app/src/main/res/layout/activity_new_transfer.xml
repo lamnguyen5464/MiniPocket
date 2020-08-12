@@ -28,7 +28,7 @@
             >
             <Switch
                 android:id="@+id/switch_select"
-                android:layout_width="100dp"
+                android:layout_width="110dp"
                 android:layout_height="100dp"
                 android:layout_centerHorizontal="true"
                 android:track="@drawable/custom_switch_earn_pay"
@@ -45,6 +45,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
+                android:inputType="textCapSentences"
                 android:fontFamily="@font/chalkboard"
                 android:background="@{(newTransfer.getNewTranferModel().isEarning) ? @drawable/custom_button_back_earning : @drawable/custom_button_back_paying}"
                 android:textColor="@{(newTransfer.getNewTranferModel().isEarning) ? @color/GREEN : @color/RED}"

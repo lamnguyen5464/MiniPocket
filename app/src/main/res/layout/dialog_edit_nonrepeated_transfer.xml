@@ -125,6 +125,7 @@
                 android:background="@drawable/custom_background_white"
                 android:fontFamily="@font/chalkboard"
                 android:maxLength="50"
+                android:inputType="textCapSentences"
                 android:hint="bla blo ble." />
         </RelativeLayout>
         <RelativeLayout

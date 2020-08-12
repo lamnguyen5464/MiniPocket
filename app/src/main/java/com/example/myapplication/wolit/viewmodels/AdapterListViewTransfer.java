@@ -112,7 +112,7 @@ public class AdapterListViewTransfer extends BaseAdapter {
             viewHolder = (ViewHolder)convertView.getTag();
         }
         DecimalFormat decimalFormat = new DecimalFormat("###,###,###");
-        Log.d("@@@", arrayTransactions.get(lastIndex - position).getValue()+" "+arrayTransactions.get(lastIndex - position).getNote());
+//        Log.d("@@@", arrayTransactions.get(lastIndex - position).getValue()+" "+arrayTransactions.get(lastIndex - position).getNote());
         double value = arrayTransactions.get(lastIndex - position).getValue();
         if (value < 0){
             viewHolder.labelValue.setTextColor(ContextCompat.getColor(context, R.color.RED));

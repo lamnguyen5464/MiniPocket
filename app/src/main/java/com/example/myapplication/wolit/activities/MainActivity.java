@@ -19,10 +19,12 @@ import com.example.myapplication.wolit.framents.FragmentFunc;
 import com.example.myapplication.wolit.framents.main.FragmentTransfer;
 import com.example.myapplication.wolit.model.CurrentStatus;
 import com.example.myapplication.wolit.database.RealmApdapter;
+import com.example.myapplication.wolit.model.PocketVers;
 import com.example.myapplication.wolit.model.tranferdetail.NonRepeatedDetail;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.jakewharton.threetenabp.AndroidThreeTen;
 
+import io.realm.Realm;
 import io.realm.RealmResults;
 
 public class MainActivity extends AppCompatActivity {
@@ -59,8 +61,6 @@ public class MainActivity extends AppCompatActivity {
         bottomNavigationView.setOnNavigationItemSelectedListener(navigationItemSelectedListener);
         bottomNavigationView.setSelectedItemId(R.id.frag2);
         FragmentFunc.loadFragment(FragmentCurrentStatus.getInstance(true, getSupportFragmentManager()), getSupportFragmentManager(),  R.id.frameLayout);
-
-
 
 
 
