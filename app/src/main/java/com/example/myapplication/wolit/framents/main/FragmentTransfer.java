@@ -42,6 +42,7 @@ import com.kizitonwose.calendarview.ui.DayBinder;
 
 import org.threeten.bp.LocalDate;
 import org.threeten.bp.YearMonth;
+import org.threeten.bp.ZoneId;
 import org.threeten.bp.temporal.WeekFields;
 
 import java.util.Locale;
@@ -143,7 +144,7 @@ public class FragmentTransfer extends Fragment {
         //calendar
         calendarView = view.findViewById(R.id.calendarView);
 
-        YearMonth currentMonth = YearMonth.now();
+        YearMonth currentMonth = YearMonth.now(ZoneId.of("Asia/Ho_Chi_Minh"));
         calendarView.setup(currentMonth.minusMonths(12), currentMonth.plusMonths(12), WeekFields.of(Locale.getDefault()).getFirstDayOfWeek());
         calendarView.scrollToDate(LocalDate.of(selectedDate.getYear(), selectedDate.getMonth(), selectedDate.getDate()));
         calendarView.setDayHeight(((int) getContext().getResources().getDisplayMetrics().density * 80));
